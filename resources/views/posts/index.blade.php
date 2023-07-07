@@ -11,17 +11,23 @@
             <div style="text-align:center;" class="title">
             <h1>Home</h1>
             </div>
+            <br>
             <div style="text-align:center;" class="information">
-                @foreach ($posts as $post)
-                 <h2>{{ $post->email }}</h2>
-                 <h2>{{ $post->address }}</h2>
-                 <h2>{{ $post->tel }}</h2>
+                
+                 <h2>{{$posts->find(1)->email }}</h2>
+                 <br>
+                 <h2>{{ $posts->find(1)->address }}</h2>
+                 <br>
+                 <h2>{{ $posts->find(1)->tel }}</h2>
+                 <br>
             </div>
-            @endforeach
+            
             <br>
             <div style="text-align:center;" class="edit-button">
-            <input type="submit" value="編集"/>
+            <input type="submit"  href='/edit' value="編集"/>
+            <a href='/edit'>編集</a>
             </div>
+            
             
             
         </form>

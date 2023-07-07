@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('address',200);
             $table->string('email',100);
             $table->string('tel');
+            $table->foreignId('users_id')->constrained();
+            $table->foreignId('site_id')->constrained();
             $table->softDeletes();
         });
     }
