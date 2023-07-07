@@ -12,8 +12,8 @@ class PostController extends Controller
         return view('posts.index')->with(['posts' => $post->get()]);
     }
     
-    public function information(Post $post)
+    public function edit(Post $post)
     {
-        return view('posts.login');
+        return view('posts.edit')->with(['posts' => $post->get()]);;
     }
 }
