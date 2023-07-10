@@ -13,19 +13,19 @@
             </div>
             <br>
             <div style="text-align:center;" class="information">
-                
-                 <h2>{{$posts->find(1)->email }}</h2>
+            @foreach($post as $posts)
+                 <h2>{{$posts->email }}</h2>
                  <br>
-                 <h2>{{ $posts->find(1)->address }}</h2>
+                 <h2>{{ $posts->address }}</h2>
                  <br>
-                 <h2>{{ $posts->find(1)->tel }}</h2>
+                 <h2>{{ $posts->tel }}</h2>
                  <br>
+                @endforeach
             </div>
             
             <br>
             <div style="text-align:center;" class="edit-button">
-            <input type="submit"  href='/edit' value="編集"/>
-            <a href='/edit'>編集</a>
+            <a href='/index/edit'>編集</a>
             </div>
             
             

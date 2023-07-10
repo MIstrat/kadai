@@ -27,8 +27,10 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::group(['middleware' => ['auth']], function(){
-    Route::get('/', [PostController::class, 'index'])->name('index');
-    Route::get('/edit', [PostController::class, 'edit']);
+    Route::get('/index',[PostController::class,'index'])->name('index');
+    Route::get('/index/edit', [PostController::class, 'edit'])->name('edit');
+    //Route::get('/{user}', [PostController::class, 'index'])->name('index');
+    
 });
 
 Route::middleware('auth')->group(function () {

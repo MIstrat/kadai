@@ -11,6 +11,11 @@ class Site extends Model
     
     public function posts()
     {
-        return $this->belongsTo(Post::class);
+        return $this->hasMany('App\Models\Post');
+    }
+    
+    public function user()
+    {
+        return $this->hasMany('App\Models\User');
     }
 }
