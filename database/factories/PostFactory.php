@@ -19,7 +19,10 @@ class PostFactory extends Factory
         return [
             'email' => fake()->email,
             'address' => fake()->address(),
-            'TEL' => fake()->phonenumber(),
+            'tel' => fake()->phonenumber(),
+            'user_id' => 2,
+            'site_id' => 3,
+            
             //
         ];
     }

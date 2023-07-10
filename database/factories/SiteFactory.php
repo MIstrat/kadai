@@ -19,7 +19,7 @@ class SiteFactory extends Factory
         return [
             'site_name' => fake()->word,
             'site_url' => fake()->text,
-            'posts_id' => 1,
+            
             //
         ];
     }

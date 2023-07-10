@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\Site;
 
 class Post extends Model
 {
@@ -18,11 +20,11 @@ class Post extends Model
     
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(User::class);
     }
     
     public function sites()
     {
-        return $this->hasOne(Site::class);
+        return $this->belongsTo(Site::class);
     }
 }

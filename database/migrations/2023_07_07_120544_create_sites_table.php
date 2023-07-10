@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('site_name');
             $table->string('site_url');
-            $table->foreignId('posts_id')->constrained();
+            
         });
     }
 
