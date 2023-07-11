@@ -46,12 +46,12 @@ class User extends Authenticatable
     
     public function posts()
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany('App\Models\Post');
     }
     
-    public function sites()
+    public function paginatedPosts($limit_count= 10) 
     {
-        return $this->hasMany(Site::class);
+        return $this->posts()->orderBy('id')->paginate($limit_count);
     }
     
     

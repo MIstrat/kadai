@@ -21,9 +21,7 @@ class PostFactory extends Factory
             'address' => fake()->address(),
             'tel' => fake()->phonenumber(),
             'user_id' => 2,
-            'site_id' => 3,
             
-            //
         ];
     }
 }

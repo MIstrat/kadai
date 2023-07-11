@@ -28,7 +28,10 @@ Route::get('/dashboard', function () {
 
 Route::group(['middleware' => ['auth']], function(){
     Route::get('/index',[PostController::class,'index'])->name('index');
+    Route::post('/index',[PostController::class,'store'])->name('store');
     Route::get('/index/edit', [PostController::class, 'edit'])->name('edit');
+    //Route::get('/index/edit/siteedit', [SiteController::class, 's_edit'])->name('s_edit');
+ 
     //Route::get('/{user}', [PostController::class, 'index'])->name('index');
     
 });
