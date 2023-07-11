@@ -13,16 +13,16 @@
             </div>
             <br>
             <div style="text-align:center;" class="information">
-            @foreach($post as $posts)
-                 <h2>{{$posts->email }}</h2>
+            @foreach($posts as $post)
+                 <h2>{{ $post->email }}</h2>
                  <br>
-                 <h2>{{ $posts->address }}</h2>
+                 <h2>{{ $post->address }}</h2>
                  <br>
-                 <h2>{{ $posts->tel }}</h2>
+                 <h2>{{ $post->tel }}</h2>
                  <br>
-                @endforeach
+            @endforeach
             </div>
-            
+               {{ $posts->links() }}
             <br>
             <div style="text-align:center;" class="edit-button">
             <a href='/index/edit'>編集</a>

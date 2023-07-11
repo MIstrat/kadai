@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\Paginator;
 use App\Models\User;
 use App\Models\Site;
 
@@ -15,16 +16,24 @@ class Post extends Model
         'email',
         'address',
         'tel',
-        ];
+        'user_id',
+    ];
         
     
-    public function users()
+    public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo('App\Models\User');
     }
     
-    public function sites()
+    //public function getPaginateByLimit(int $limit_count = 1)
+    //{
+      //  return $this->orderBy('id')->paginate($limit_count);
+    //}
+
+    public static function getPaginateByLimit(int $userId, int $limit_count = 1) 
     {
-        return $this->belongsTo(Site::class);
+        return self::where('user_id', $userId)->orderBy('id')->paginate($limit_count);
     }
+    
+
 }
