@@ -17,10 +17,12 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'email' => fake()->email,
-            'address' => fake()->address(),
-            'tel' => fake()->phonenumber(),
-            'user_id' => 2,
+            'email' => fake() -> email,
+            'address' => fake() -> address(),
+            'tel' => fake() -> phonenumber(),
+            'site_name' => fake() -> realText($maxNbChars = 10),
+            'site_url' => fake() -> url
+            'user_id' => fake() -> numberBetween($max = 8, $min= 1 ),
             
         ];
     }
