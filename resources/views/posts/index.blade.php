@@ -7,31 +7,21 @@
     </head>
     <x-app-layout>
     <body>
-        
             <div style="text-align:center;" class="title">
-            <h1>Home</h1>
+            <h1>サイト一覧</h1>
             </div>
             <br>
             <div style="text-align:center;" class="information">
             @foreach($posts as $post)
-                 <h2>{{ $post->email }}</h2>
-                 <br>
-                 <h2>{{ $post->address }}</h2>
-                 <br>
-                 <h2>{{ $post->tel }}</h2>
+                <h2>
+                 <a href="/index/{{ $post->id }}">{{ $post->site_name }}</a>
+                 </h2>
                  <br>
             @endforeach
             </div>
                {{ $posts->links() }}
             <br>
-            <div style="text-align:center;" class="edit-button">
-            <a href='/index/edit'>編集</a>
-            </div>
             
-            
-            
-        </form>
-       
     </body>
      </x-app-layout>
 </html>

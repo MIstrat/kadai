@@ -49,7 +49,7 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Post');
     }
     
-    public function paginatedPosts($limit_count= 10) 
+    public function paginatedPosts($limit_count= 1) 
     {
         return $this->posts()->orderBy('id')->paginate($limit_count);
     }

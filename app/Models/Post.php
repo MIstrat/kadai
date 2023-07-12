@@ -16,7 +16,9 @@ class Post extends Model
         'email',
         'address',
         'tel',
-        'user_id',
+        'site_name',
+        'site_url',
+        'user_id'
     ];
         
     

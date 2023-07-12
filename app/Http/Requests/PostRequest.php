@@ -3,22 +3,22 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Post;
+use App\Models\User;
 
 class PostRequest extends FormRequest
 {
     
-    public function getByLimit(int $limit_count = 1)
-    {
-        return $this->orderBy('id')->limit($limit_count)->get();
-    }
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
+     
+    
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -30,8 +30,10 @@ class PostRequest extends FormRequest
     {
         return [
             'post.email' => 'required|string|max:100',
-                'post.address' => 'required|string|max:200',
-                'post.tel' => 'required|string|max:100',
+            'post.address' => 'required|string|max:200',
+            'post.tel' => 'required|string|max:100',
+            'post.site_name' => 'required|string|max:100',
+            'post.site_url' => 'required|string|max:100',
             //
         ];
     }
