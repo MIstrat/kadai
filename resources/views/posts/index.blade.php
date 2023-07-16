@@ -7,21 +7,35 @@
     </head>
     <x-app-layout>
     <body>
-            <div style="text-align:center;" class="title">
-            <h1>サイト一覧</h1>
+        <div style="text-align:center;" class="title">
+        <h1>サイト一覧</h1>
+        </div>
+        <br>
+        <div style="text-align:center;" class="information">
+        @foreach($posts as $post)
+            <h2>
+             <a href="/index/{{ $post->id }}">{{ $post->site_name }}</a>
+             </h2>
+             <br>
+        @endforeach
+        </div>
+           {{ $posts->links() }}
+        <br>
+    
+        <div style="text-align:center;" class="footer">
+            <a href="/index/store">新規作成</a>
+        </div>
+        
+        <div class="notifications">
+        @forelse(auth()->user()->notifications()->take(5)->get() as $notification)
+            <div class="{{ is_null($notification->read_at) ? 'un-read' : '' }}">
+                <p>{{ $notification->data['site_name'] }}</p>
+                <p>{{ $notification->data['site_url'] }}</p>
             </div>
-            <br>
-            <div style="text-align:center;" class="information">
-            @foreach($posts as $post)
-                <h2>
-                 <a href="/index/{{ $post->id }}">{{ $post->site_name }}</a>
-                 </h2>
-                 <br>
-            @endforeach
-            </div>
-               {{ $posts->links() }}
-            <br>
-            
+        @empty
+            <p>まだ通知はありません</p>
+        @endforelse
+        </div>
     </body>
      </x-app-layout>
 </html>

@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
-use App\Models\Site;
+use App\Models\Information;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\PostRequest;
+use App\Notifications\InformationNotification;
 
 class PostController extends Controller
 {
@@ -20,7 +21,7 @@ class PostController extends Controller
      public function index(Post $post)
     {
         $user = Auth::user();
-        $posts = $user->paginatedPosts(10);;
+        $posts = $user->paginatedPosts(5);;
         //dd($posts);
         return view('posts.index',compact('user','posts'));
         //return view('posts.index')->with(['posts' => $post]);
@@ -34,34 +35,46 @@ class PostController extends Controller
         return view('posts.info')->with(['post' => $post]);
     }
     
-    public function edit(Post $post)
+     public function add(Post $post)
     {
         //$user = Auth::user();
         //$post = posts->get();
+        return view('posts.store')->with(['post' => $post]);
+    }
+    
+    public function store(PostRequest $request, Post $post, Information $information)
+    {
+        $input_post = $request['post'];
+        $input_post['user_id'] = Auth::user()->id;
+        $input_information = $request['post'];
+        $input_information['user_id'] = Auth::user()->id;
+        //dd($input);
+        $post->fill($input_post)->save();
+        $information->fill($input_information)->save();
+        return redirect('/index' );
+    }
+    
+    
+    public function edit(Post $post)
+    {
         return view('posts.edit')->with(['post' => $post]);
     }
     
-    public function update(PostRequest $request, Post $post)
+    public function update(PostRequest $request, Post $post, Information $information)
     {
         $input_post = $request['post'];
-        $input['user_id'] = Auth::user()->id;
+        $input_post['user_id'] = Auth::user()->id;
         //dd($input);
+        $input_information = $request['post'];
+        $input_information['user_id'] = Auth::user()->id;
+        //dd($input_information);
         $post->fill($input_post)->save();
+        $information->fill($input_information)->save();
+        
         
         
         return redirect('/index/'. $post->id);
-    }
-
-    public function store(PostRequest $request, Post $post)
-    {
-        $input = $request['post'];
-        //$site -> get('id');
-        $input['user_id'] = Auth::user()->id;
-        //$input['site_id'] = $site->id;
-        //dd($input);
-        $post->fill($input)->save();
         
-        return redirect('/index' );
     }
     
     public function siteedit()

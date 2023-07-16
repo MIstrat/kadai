@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\InformationController;
 
 
 /*
@@ -28,13 +30,13 @@ Route::get('/dashboard', function () {
 
 Route::group(['middleware' => ['auth']], function(){
     Route::get('/index',[PostController::class,'index'])->name('index');
+    //Route::get('/index',[InformationController::class,'store']);
+    Route::get('/index/store',[PostController::class,'add'])->name('add');
+    Route::post('/index',[PostController::class,'store'])->name('store');
+    //Route::post('/index',[InformationController::class,'store']);
     Route::get('/index/{post}/edit', [PostController::class, 'edit'])->name('edit');
     Route::get('/index/{post}',[PostController::class,'info'])->name('info');
     Route::put('/index/{post}',[PostController::class,'update'])->name('update');
-    
-    //Route::get('/index/edit/siteedit', [SiteController::class, 's_edit'])->name('s_edit');
- 
-    //Route::get('/{user}', [PostController::class, 'index'])->name('index');
     
 });
 
