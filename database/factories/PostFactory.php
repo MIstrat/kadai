@@ -21,9 +21,9 @@ class PostFactory extends Factory
             'address' => fake() -> address(),
             'tel' => fake() -> phonenumber(),
             'site_name' => fake() -> realText($maxNbChars = 10),
-            'site_url' => fake() -> url
-            'user_id' => fake() -> numberBetween($max = 8, $min= 1 ),
+            'site_url' => fake() -> url,
+            'user_id' => fake() -> numberBetween($max=1, $min=1)
             
-        ];
+                ];
     }
 }

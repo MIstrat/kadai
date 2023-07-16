@@ -7,38 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\Paginator;
 use App\Models\User;
 use Illuminate\Notifications\Notifiable;
+use App\Http\Requests\PostRequest;
+use App\Notifications\InformationNotification;
 
-class Post extends Model
+class Information extends Model
 {
     use HasFactory;
     use Notifiable;
     
     protected $fillable = [
-        'email',
-        'address',
-        'tel',
         'site_name',
         'site_url',
-        'user_id'
     ];
-        
-    
-    public function information(User $user)
-    {
-        // ユーザーはとりあえず決めうち
-        $user = User::find(1);
-        
-        //  全通知を取得
-        foreach ($user->notifications as $notification) {
-            echo $notification->type;
-        }
-        
-        //  未読の通知のみを取得
-        foreach ($user->unreadNotifications as $notification) 
-        {
-            echo $notification->type;
-        }
-    }
     
     public function user()
     {
@@ -54,6 +34,7 @@ class Post extends Model
     {
         return self::where('user_id', $userId)->orderBy('id')->paginate($limit_count);
     }
+    
     
 
 }
