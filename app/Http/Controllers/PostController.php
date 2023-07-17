@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\User;
 use App\Models\Information;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +52,7 @@ class PostController extends Controller
         //dd($input);
         $post->fill($input_post)->save();
         $information->fill($input_information)->save();
+
         return redirect('/index' );
     }
     
@@ -71,7 +73,13 @@ class PostController extends Controller
         $post->fill($input_post)->save();
         $information->fill($input_information)->save();
         
-        
+        //dd($information);
+        // お知らせ内容を対象ユーザー宛てに通知登録
+        $user = Auth::user();
+        //dd($user);
+        $user->notify(
+            new InformationNotification($information)
+        );
         
         return redirect('/index/'. $post->id);
         

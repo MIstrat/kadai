@@ -29,8 +29,9 @@
         <div class="notifications">
         @forelse(auth()->user()->notifications()->take(5)->get() as $notification)
             <div class="{{ is_null($notification->read_at) ? 'un-read' : '' }}">
-                <p>{{ $notification->data['site_name'] }}</p>
-                <p>{{ $notification->data['site_url'] }}</p>
+                <p>{{ $notification->data['site_name'] }}で情報が変更されました。</p>
+                <a href="{{ $notification->data['site_url'] }}">●{{ $notification->data['site_url'] }}</a>
+                <br>
             </div>
         @empty
             <p>まだ通知はありません</p>
