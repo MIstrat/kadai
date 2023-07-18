@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\PostRequest;
 use App\Notifications\InformationNotification;
+use Illuminate\Notifications\DatabaseNotification;
 
 class PostController extends Controller
 {
@@ -19,14 +20,18 @@ class PostController extends Controller
       //  return view('posts.index')->with(['posts' => $post->get()]);
     //}
     
-     public function index(Post $post)
+     public function index(User $user, Post $post, InformationNotification $notifications)
     {
-        $user = Auth::user();
-        $posts = $user->paginatedPosts(5);;
+        $user = User::find(1);
+        $posts = $user->paginatedPosts(5);
         //dd($posts);
-        return view('posts.index',compact('user','posts'));
-        //return view('posts.index')->with(['posts' => $post]);
-        //return view('posts.index')->with(['user' => $user]);
+        // 対象のページ番号取得
+        //$page =  $request->get('page', 1);
+        // ページネーションで取得
+        //$notifications = $user->paginatedInformations(3);
+        $user->notifications()->paginate(3);
+        //dd($notifications);
+        return view('posts.index',compact('user','posts', 'notifications'));
     }
     
     public function info(Post $post)
@@ -85,13 +90,13 @@ class PostController extends Controller
         
     }
     
-    public function siteedit()
+    public function delete(Post $post, Information $information)
     {
-        $input = $request['posts'];
-        $input['user_id'] = Auth::user()->id;
-        $input['site_id'] = site()->id;
-        $posts->fill($input)->save();
-        return redirect('/index/edit/siteedit' );
+        $information->Information::where('site_name', $post->site_name )->get();
+        dd($information);
+        $information->delete();
+        $post->delete();
+        return redirect('/index');
     }
 }
 

@@ -36,6 +36,7 @@
         @empty
             <p>まだ通知はありません</p>
         @endforelse
+        {{ $notification->links() }}
         </div>
     </body>
      </x-app-layout>

@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\Paginator;
 use App\Models\User;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
     use HasFactory;
     use Notifiable;
+    use SoftDeletes;
     
     protected $fillable = [
         'email',
@@ -26,7 +28,7 @@ class Post extends Model
     public function information(User $user)
     {
         // ユーザーはとりあえず決めうち
-        $user = User::find(1);
+        $user = Auth::user();
         
         //  全通知を取得
         foreach ($user->notifications as $notification) {

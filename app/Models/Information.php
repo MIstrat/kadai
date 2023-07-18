@@ -9,11 +9,13 @@ use App\Models\User;
 use Illuminate\Notifications\Notifiable;
 use App\Http\Requests\PostRequest;
 use App\Notifications\InformationNotification;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Information extends Model
 {
     use HasFactory;
     use Notifiable;
+    use SoftDeletes;
     
     protected $fillable = [
         'site_name',

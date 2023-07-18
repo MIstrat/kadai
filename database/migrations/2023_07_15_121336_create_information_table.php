@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('site_name');
             $table->string('site_url');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
