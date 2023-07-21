@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\Paginator;
 use App\Models\User;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
     use HasFactory;
     use Notifiable;
+    use SoftDeletes;
     
     protected $fillable = [
         'email',
@@ -19,14 +21,14 @@ class Post extends Model
         'tel',
         'site_name',
         'site_url',
-        'user_id'
+        'user_id',
     ];
         
     
     public function information(User $user)
     {
         // ユーザーはとりあえず決めうち
-        $user = User::find(1);
+        $user = Auth::user();
         
         //  全通知を取得
         foreach ($user->notifications as $notification) {
@@ -53,6 +55,21 @@ class Post extends Model
     public static function getPaginateByLimit(int $userId, int $limit_count = 1) 
     {
         return self::where('user_id', $userId)->orderBy('id')->paginate($limit_count);
+    }
+    
+    public static function boot()
+    {
+        parent::boot();
+        
+        static::deleted(function ($user)
+        {
+            $user->post()->delete();
+        });
+    }
+    
+    public function post()
+    {
+        return $this->hasMany('App\Models\Information');
     }
     
 

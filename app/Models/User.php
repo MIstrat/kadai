@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Post;
 use App\Models\Information;
+use App\Notifications\InformationNotification;
+use Illuminate\Pagination\Paginator;
 
 class User extends Authenticatable
 {
@@ -54,21 +56,10 @@ class User extends Authenticatable
         return $this->posts()->orderBy('id')->paginate($limit_count);
     }
     
-    public function information(User $user)
+    public function paginatedInformations($limit_count= 1) 
     {
-        // ユーザーはとりあえず決めうち
-        $user = User::find(1);
-        
-        //  全通知を取得
-        foreach ($user->notifications as $notification) {
-            echo $notification->type;
-        }
-        
-        //  未読の通知のみを取得
-        foreach ($user->unreadNotifications as $notification) 
-        {
-            echo $notification->type;
-        }
+        return $this->notifications()->orderBy('updated_at', 'DESC')->paginate($limit_count);
     }
+    
     
 }

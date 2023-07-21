@@ -9,15 +9,18 @@ use App\Models\User;
 use Illuminate\Notifications\Notifiable;
 use App\Http\Requests\PostRequest;
 use App\Notifications\InformationNotification;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Information extends Model
 {
     use HasFactory;
     use Notifiable;
+    use SoftDeletes;
     
     protected $fillable = [
         'site_name',
         'site_url',
+        'post_id'
     ];
     
     public function user()
@@ -35,6 +38,9 @@ class Information extends Model
         return self::where('user_id', $userId)->orderBy('id')->paginate($limit_count);
     }
     
-    
+    public function post()
+    {
+        return $this->belongsTo('App\Models\Post');
+    }
 
 }
