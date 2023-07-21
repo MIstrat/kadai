@@ -20,6 +20,7 @@ class Information extends Model
     protected $fillable = [
         'site_name',
         'site_url',
+        'post_id'
     ];
     
     public function user()
@@ -37,6 +38,9 @@ class Information extends Model
         return self::where('user_id', $userId)->orderBy('id')->paginate($limit_count);
     }
     
-    
+    public function post()
+    {
+        return $this->belongsTo('App\Models\Post');
+    }
 
 }

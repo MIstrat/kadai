@@ -19,24 +19,11 @@
              <br>
         @endforeach
         </div>
-           {{ $posts->links() }}
+         {{ $posts->links() }}  
         <br>
     
         <div style="text-align:center;" class="footer">
             <a href="/index/store">新規作成</a>
-        </div>
-        
-        <div class="notifications">
-        @forelse(auth()->user()->notifications()->take(5)->get() as $notification)
-            <div class="{{ is_null($notification->read_at) ? 'un-read' : '' }}">
-                <p>{{ $notification->data['site_name'] }}で情報が変更されました。</p>
-                <a href="{{ $notification->data['site_url'] }}">●{{ $notification->data['site_url'] }}</a>
-                <br>
-            </div>
-        @empty
-            <p>まだ通知はありません</p>
-        @endforelse
-        {{ $notification->links() }}
         </div>
     </body>
      </x-app-layout>

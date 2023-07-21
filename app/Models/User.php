@@ -61,21 +61,5 @@ class User extends Authenticatable
         return $this->notifications()->orderBy('updated_at', 'DESC')->paginate($limit_count);
     }
     
-    public function information(User $user)
-    {
-        // ユーザーはとりあえず決めうち
-        $user = Auth::user();
-        
-        //  全通知を取得
-        foreach ($user->notifications as $notification) {
-            echo $notification->type;
-        }
-        
-        //  未読の通知のみを取得
-        foreach ($user->unreadNotifications as $notification) 
-        {
-            echo $notification->type;
-        }
-    }
     
 }

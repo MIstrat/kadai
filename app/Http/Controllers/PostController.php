@@ -20,18 +20,30 @@ class PostController extends Controller
       //  return view('posts.index')->with(['posts' => $post->get()]);
     //}
     
-     public function index(User $user, Post $post, InformationNotification $notifications)
+     public function index(User $user, Post $post)
     {
-        $user = User::find(1);
+        $user = Auth::user();
         $posts = $user->paginatedPosts(5);
         //dd($posts);
         // 対象のページ番号取得
         //$page =  $request->get('page', 1);
         // ページネーションで取得
-        //$notifications = $user->paginatedInformations(3);
-        $user->notifications()->paginate(3);
+        //$user->notifications()->paginate(3);
         //dd($notifications);
-        return view('posts.index',compact('user','posts', 'notifications'));
+        return view('posts.index',compact('user','posts'));
+    }
+    
+     public function notice(User $user, InformationNotification $notifications)
+    {
+        $user = Auth::user();
+        //dd($posts);
+        // 対象のページ番号取得
+        //$page =  $request->get('page', 1);
+        // ページネーションで取得
+        $notifications = $user ->paginatedInformations(5);
+        //$user->notifications()->paginate(3);
+        //dd($notifications);
+        return view('posts.notice',compact('user', 'notifications'));
     }
     
     public function info(Post $post)
@@ -53,9 +65,10 @@ class PostController extends Controller
         $input_post = $request['post'];
         $input_post['user_id'] = Auth::user()->id;
         $input_information = $request['post'];
-        $input_information['user_id'] = Auth::user()->id;
-        //dd($input);
+        //dd($input_information);
         $post->fill($input_post)->save();
+        $input_information['post_id'] = $post->id;
+        //dd($post);
         $information->fill($input_information)->save();
 
         return redirect('/index' );
@@ -73,9 +86,10 @@ class PostController extends Controller
         $input_post['user_id'] = Auth::user()->id;
         //dd($input);
         $input_information = $request['post'];
-        $input_information['user_id'] = Auth::user()->id;
         //dd($input_information);
         $post->fill($input_post)->save();
+        $input_information['post_id'] = $post->id;
+        //ifでpostとinformationが一致しなければ以下の操作は行わないようにする
         $information->fill($input_information)->save();
         
         //dd($information);
@@ -86,18 +100,45 @@ class PostController extends Controller
             new InformationNotification($information)
         );
         
-        return redirect('/index/'. $post->id);
+        return redirect('/index/' . $post->id );
         
     }
     
     public function delete(Post $post, Information $information)
     {
-        $information->Information::where('site_name', $post->site_name )->get();
-        dd($information);
-        $information->delete();
+        //$information->where('site_name', $post->site_name )->get();
+        //dd($post);
+        //$information->delete();
         $post->delete();
         return redirect('/index');
     }
+    
+     /**
+     * 通知を既読にする
+     *
+     * @param DatabaseNotification $notification
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function read(DatabaseNotification $notification)
+    {
+        $notification->markAsRead();
+
+        return redirect($notification->data['url']);
+    }
+
+    /**
+     * 全ての通知を既読にする
+     *
+     * @param DatabaseNotification $notification
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function readAll(DatabaseNotification $notification)
+    {
+        auth()->user()->unreadNotifications->markAsRead();
+
+        return redirect(route('notifications.index'));
+    }
+
 }
 
 

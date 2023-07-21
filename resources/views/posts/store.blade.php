@@ -44,9 +44,6 @@
                         <input type="text" name="post[site_url]"  >
                         <p class="site_url-error" style="color:red">{{ $errors->first('post.site_url') }}</p>
                     </div>
-                    <div>
-                        <input type="hidden" name="post[user_id]" value="{{ $post->user_id }}">
-                    </div>
                     <br>
                     
             

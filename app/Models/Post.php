@@ -21,7 +21,7 @@ class Post extends Model
         'tel',
         'site_name',
         'site_url',
-        'user_id'
+        'user_id',
     ];
         
     
@@ -55,6 +55,21 @@ class Post extends Model
     public static function getPaginateByLimit(int $userId, int $limit_count = 1) 
     {
         return self::where('user_id', $userId)->orderBy('id')->paginate($limit_count);
+    }
+    
+    public static function boot()
+    {
+        parent::boot();
+        
+        static::deleted(function ($user)
+        {
+            $user->post()->delete();
+        });
+    }
+    
+    public function post()
+    {
+        return $this->hasMany('App\Models\Information');
     }
     
 
