@@ -11,6 +11,7 @@ use App\Models\Post;
 use App\Models\Information;
 use App\Notifications\InformationNotification;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 
 class User extends Authenticatable
 {
@@ -58,7 +59,7 @@ class User extends Authenticatable
     
     public function paginatedInformations($limit_count= 1) 
     {
-        return $this->notifications()->orderBy('updated_at', 'DESC')->paginate($limit_count);
+        return $this->unreadNotifications()->orderBy('updated_at', 'DESC')->paginate($limit_count);
     }
     
     

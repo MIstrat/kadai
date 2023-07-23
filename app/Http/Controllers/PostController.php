@@ -33,7 +33,7 @@ class PostController extends Controller
         return view('posts.index',compact('user','posts'));
     }
     
-     public function notice(User $user, InformationNotification $notifications)
+     public function notification(User $user, InformationNotification $notifications)
     {
         $user = Auth::user();
         //dd($posts);
@@ -43,7 +43,7 @@ class PostController extends Controller
         $notifications = $user ->paginatedInformations(5);
         //$user->notifications()->paginate(3);
         //dd($notifications);
-        return view('posts.notice',compact('user', 'notifications'));
+        return view('posts.notification',compact('user', 'notifications'));
     }
     
     public function info(Post $post)
@@ -123,7 +123,7 @@ class PostController extends Controller
     {
         $notification->markAsRead();
 
-        return redirect($notification->data['url']);
+        return redirect()->back();
     }
 
     /**

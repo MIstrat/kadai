@@ -38,8 +38,8 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('/index/{post}',[PostController::class,'info'])->name('info');
     Route::put('/index/{post}',[PostController::class,'update'])->name('update');
     Route::delete('/index/{post}', [PostController::class, 'delete'])->name('delete');
-    Route::get('/notice',[PostController::class,'notice'])->name('notice');
-    Route::post('/notice',[PostController::class,'read'])->name('read');
+    Route::get('/notifications',[PostController::class,'notification'])->name('notification');
+    Route::get('/notifications/{notification}',[PostController::class,'read'])->name('notifications.read');
 });
 
 Route::middleware('auth')->group(function () {
