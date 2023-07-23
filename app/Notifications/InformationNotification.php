@@ -32,7 +32,7 @@ class InformationNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['mail'];
     }
 
     /**
@@ -50,5 +50,13 @@ class InformationNotification extends Notification
              //  通知からリンクしたいURLがあれば設定しておくと便利
              //'url' => route('infos.show', ['information' => $this->information])
         ];
+    }
+    
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+            ->greeting('個人情報が変更されました')
+            ->line('サイト名：' . $this->information->site_name)
+            ->line('サイトURL：' . $this->information->site_url);
     }
 }

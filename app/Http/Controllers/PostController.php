@@ -138,6 +138,15 @@ class PostController extends Controller
 
         return redirect(route('notifications.index'));
     }
+    
+    public function send(User $user, string $information)
+    {
+        $user->notify(new InformationNotification(
+            
+            $information
+            
+            ));
+    }
 
 }
 
