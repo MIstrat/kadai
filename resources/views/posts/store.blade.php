@@ -32,6 +32,18 @@
                         <input type="text" name="post[tel]">
                         <p class="tel-error" style="color:red">{{ $errors->first('post.tel') }}</p>
                     </div>
+                     <br>
+                    <div style="text-align:center;" class="post-creditCardType">
+                        <h2>クレジットカード種類</h2>
+                        <input type="text" name="post[creditCardType]"  >
+                        <p class="creditCardType-error" style="color:red">{{ $errors->first('post.creditCardType') }}</p>
+                    </div>
+                     <br>
+                    <div style="text-align:center;" class="post-creditCardNumber">
+                        <h2>クレジットカード番号</h2>
+                        <input type="text" name="post[creditCardNumber]" >
+                        <p class="creditCardNumber-error" style="color:red">{{ $errors->first('post.creditCardNumber') }}</p>
+                    </div>
                     <br>
                     <div style="text-align:center;" class="post-site_name">
                         <h2>サイト名</h2>
