@@ -25,12 +25,34 @@ class PostController extends Controller
         $user = Auth::user();
         $posts = $user->paginatedPosts(5);
         //dd($posts);
-        // 対象のページ番号取得
-        //$page =  $request->get('page', 1);
-        // ページネーションで取得
-        //$user->notifications()->paginate(3);
-        //dd($notifications);
-        return view('posts.index',compact('user','posts'));
+        $search = $request->input('search');
+        dd($search);
+        $query = Post::query();
+         if ($search) {
+
+            // 全角スペースを半角に変換
+            $spaceConversion = mb_convert_kana($search, 's');
+
+            // 単語を半角スペースで区切り、配列にする（例："山田 翔" → ["山田", "翔"]）
+            $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+
+
+            // 単語をループで回し、ユーザーネームと部分一致するものがあれば、$queryとして保持される
+            foreach($wordArraySearched as $value) {
+                $query->where('email', 'like', '%'.$value.'%')
+                      ->where('address', 'like', '%'.$value.'%')
+                      ->where('tel', 'like', '%'.$value.'%')
+                      ->where('site_name', 'like', '%'.$value.'%')
+                      ->where('creditCardNumber', 'like', '%'.$value.'%')
+                      ->where('creditCardType', 'like', '%'.$value.'%');
+            }
+
+　　　　// 上記で取得した$queryをページネートにし、変数$usersに代入
+            $posts = $query;
+          
+
+        }
+        return view('posts.index',compact('user','posts','search'));
     }
     
      public function notification(User $user, InformationNotification $notifications)
