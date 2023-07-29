@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\SlackMessage;
 use App\Models\Information;
 
 class InformationNotification extends Notification
@@ -32,7 +33,7 @@ class InformationNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database','mail'];
+        return ['database','mail','slack'];
     }
 
     /**
@@ -58,5 +59,14 @@ class InformationNotification extends Notification
             ->greeting('個人情報が変更されました')
             ->line('サイト名：' . $this->information->site_name)
             ->line('サイトURL：' . $this->information->site_url);
+    }
+    
+    public function toSlack($notifiable)
+    {
+        return (new SlackMessage)
+            ->content('個人情報が変更されました')
+            ->content('サイトURL：' , $this->information->site_url)
+            ->content('サイト名：' . $this->information->site_name);
+            
     }
 }
