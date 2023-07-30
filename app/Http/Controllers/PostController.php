@@ -20,38 +20,29 @@ class PostController extends Controller
       //  return view('posts.index')->with(['posts' => $post->get()]);
     //}
     
-     public function index(User $user, Post $post)
+     public function index(User $user, Post $post, Request $request)
     {
         $user = Auth::user();
         $posts = $user->paginatedPosts(5);
-        //dd($posts);
         $search = $request->input('search');
-        dd($search);
         $query = Post::query();
-         if ($search) {
-
-            // 全角スペースを半角に変換
+        
+        if($search){
             $spaceConversion = mb_convert_kana($search, 's');
-
-            // 単語を半角スペースで区切り、配列にする（例："山田 翔" → ["山田", "翔"]）
-            $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
-
-
-            // 単語をループで回し、ユーザーネームと部分一致するものがあれば、$queryとして保持される
-            foreach($wordArraySearched as $value) {
-                $query->where('email', 'like', '%'.$value.'%')
-                      ->where('address', 'like', '%'.$value.'%')
-                      ->where('tel', 'like', '%'.$value.'%')
-                      ->where('site_name', 'like', '%'.$value.'%')
-                      ->where('creditCardNumber', 'like', '%'.$value.'%')
-                      ->where('creditCardType', 'like', '%'.$value.'%');
+            $wordArraySearched = preg_split('/[\s]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+            
+            foreach($wordArraySearched as $value){
+                $query->where('address', 'like', '%'.$value.'%')
+                    ->orWhere('email', 'like', '%'.$value.'%')
+                    ->orWhere('tel', 'like', '%'.$value.'%')
+                    ->orWhere('site_name', 'like', '%'.$value.'%')
+                    ->orWhere('creditCardType', 'like', '%'.$value.'%')
+                    ->orWhere('creditCardNumber', 'like', '%'.$value.'%');
             }
-
-　　　　// 上記で取得した$queryをページネートにし、変数$usersに代入
-            $posts = $query;
-          
-
+            
+            $posts = $query->paginate(5);
         }
+        
         return view('posts.index',compact('user','posts','search'));
     }
     
