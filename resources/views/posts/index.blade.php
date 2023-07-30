@@ -11,16 +11,19 @@
         <h1>サイト一覧</h1>
         </div>
         <br>
+        <div style="text-align:center;" class="title">
         <form method="GET" action="/index">
             <input type="search" placeholder="検索したい文字を入力" name="search" value="@if (isset($search)) {{ $search }} @endif">
             <div>
                 <button type="submit">検索</button>
                 <button>
-                    <a href="/index" class="text-white">
+                    <a href="/index" class="text-black">
                         クリア
                     </a>
                 </button>
             </div>
+            <br>
+        </div>
         </form>
         <div style="text-align:center;" class="information">
         @foreach($posts as $post)
