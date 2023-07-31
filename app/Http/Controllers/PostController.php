@@ -48,6 +48,7 @@ class PostController extends Controller
                     ->orWhere('creditCardType', 'like', '%'.$value.'%')
                     ->orWhere('creditCardNumber', 'like', '%'.$value.'%');
             }
+            
              $posts = $query->paginate(5);
         }
 

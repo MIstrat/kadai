@@ -13,8 +13,6 @@ class InformationNotification extends Notification
     use Queueable;
     
     private Information $information;
-   
-
     /**
      * Create a new notification instance.
      *
