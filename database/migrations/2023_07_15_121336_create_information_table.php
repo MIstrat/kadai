@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('site_url');
             $table->foreignId('post_id')
                 ->constrained()
-               ->cascadeOnDelete()
+                ->cascadeOnDelete()
                 ->cascadeOnUpdate();
                 
             $table->timestamps();

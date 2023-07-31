@@ -19,6 +19,8 @@ class Post extends Model
         'email',
         'address',
         'tel',
+        'creditCardType',
+        'creditCardNumber',
         'site_name',
         'site_url',
         'user_id',

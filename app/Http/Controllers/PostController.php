@@ -39,8 +39,10 @@ class PostController extends Controller
                     ->orWhere('creditCardType', 'like', '%'.$value.'%')
                     ->orWhere('creditCardNumber', 'like', '%'.$value.'%');
             }
-             $posts = $query->paginate(5);
+            
+            $posts = $query->paginate(5);
         }
+        
         return view('posts.index',compact('user','posts','search'));
     }
     
@@ -148,6 +150,15 @@ class PostController extends Controller
         auth()->user()->unreadNotifications->markAsRead();
 
         return redirect(route('notifications.index'));
+    }
+    
+    public function send(User $user, string $information)
+    {
+        $user->notify(new InformationNotification(
+
+            $information
+
+            ));
     }
 
 }
