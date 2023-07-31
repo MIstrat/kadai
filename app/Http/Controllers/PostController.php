@@ -30,7 +30,7 @@ class PostController extends Controller
         if($search){
             $spaceConversion = mb_convert_kana($search, 's');
             $wordArraySearched = preg_split('/[\s]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
-
+            
             foreach($wordArraySearched as $value){
                 $query->where('address', 'like', '%'.$value.'%')
                     ->orWhere('email', 'like', '%'.$value.'%')
@@ -39,8 +39,10 @@ class PostController extends Controller
                     ->orWhere('creditCardType', 'like', '%'.$value.'%')
                     ->orWhere('creditCardNumber', 'like', '%'.$value.'%');
             }
+            
             $posts = $query->paginate(5);
         }
+        
         return view('posts.index',compact('user','posts','search'));
     }
     
