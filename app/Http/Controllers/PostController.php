@@ -155,9 +155,9 @@ class PostController extends Controller
     public function send(User $user, string $information)
     {
         $user->notify(new InformationNotification(
-            
+
             $information
-            
+
             ));
     }
 

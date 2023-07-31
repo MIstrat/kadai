@@ -58,21 +58,12 @@ class InformationNotification extends Notification
         ];
     }
     
-    public function toMail($notifiable)
+     public function toMail($notifiable)
     {
         return (new MailMessage)
             ->greeting('個人情報が変更されました')
             ->line('サイト名：' . $this->information->site_name)
             ->line('サイトURL：' . $this->information->site_url);
     }
-    
-    public function toSlack($notifiable)
-    {
-        return (new SlackMessage)
-            ->from($this->name)
-            ->to($this->channel)
-            ->content('個人情報が変更されました')
-            ->content('サイト名：' . $this->information->site_name)
-            ->content('サイトURL：' . $this->information->site_url);
-    }
+
 }
