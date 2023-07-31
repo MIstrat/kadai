@@ -17,6 +17,7 @@ class InformationNotification extends Notification
     protected $channel;
     protected $icon;
     protected $name;
+
     /**
      * Create a new notification instance.
      *
@@ -65,5 +66,14 @@ class InformationNotification extends Notification
             ->line('サイト名：' . $this->information->site_name)
             ->line('サイトURL：' . $this->information->site_url);
     }
-
+    
+    public function toSlack($notifiable)
+    {
+        return (new SlackMessage)
+            ->from($this->name)
+            ->to($this->channel)
+            ->content('個人情報が変更されました')
+            ->content('サイト名：' . $this->information->site_name)
+            ->content('サイトURL：' . $this->information->site_url);
+    }
 }
