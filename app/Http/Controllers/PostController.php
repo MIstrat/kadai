@@ -12,6 +12,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\PostRequest;
 use App\Notifications\InformationNotification;
 use Illuminate\Notifications\DatabaseNotification;
+use App\Services\SlackNotificationServiceInterface;
 
 class PostController extends Controller
 {
@@ -19,6 +20,14 @@ class PostController extends Controller
     //{
       //  return view('posts.index')->with(['posts' => $post->get()]);
     //}
+    private $slack_notification_service_interface;
+    
+     public function __construct(
+        SlackNotificationServiceInterface $slack_notification_service_interface,
+    ) {
+        $this->slack_notification_service_interface =  $slack_notification_service_interface;
+    }
+    
     
      public function index(User $user, Post $post, Request $request)
     {
@@ -111,6 +120,8 @@ class PostController extends Controller
         $user->notify(
             new InformationNotification($information)
         );
+        //tryでdatabase,mail,slack通知 catch（失敗）でSlackに失敗したことの通知
+        $this->slack_notification_service_interface->send('こんにちは\nテスト' . $post->site_url );
         
         return redirect('/index/' . $post->id );
         
@@ -149,6 +160,15 @@ class PostController extends Controller
         auth()->user()->unreadNotifications->markAsRead();
 
         return redirect(route('notifications.index'));
+    }
+    
+    public function send(User $user, string $information)
+    {
+        $user->notify(new InformationNotification(
+
+            $information
+
+            ));
     }
 
 }

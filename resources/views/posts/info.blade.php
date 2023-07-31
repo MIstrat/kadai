@@ -20,6 +20,10 @@
                  <br>
                  <h2>{{ $post->tel }}</h2>
                  <br>
+                 <h2>{{ $post->creditCardType }}</h2>
+                 <br>
+                 <h2>{{ $post->creditCardNumber }}</h2>
+                 <br>
                  <h2>{{ $post->site_name }}</h2>
                  <br>
                  <h2>{{ $post->site_url }}</h2>
