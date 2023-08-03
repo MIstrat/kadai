@@ -7,38 +7,38 @@
     </head>
     <x-app-layout>
     <body>
-        
-            <div style="text-align:center;" class="title">
+        <div class="bg-blue-500 bg-opacity-50">
+            <div style="text-align:center;" class="text-xl font-medium">
             <h1>個人情報</h1>
             </div>
             <br>
-            <div style="text-align:center;" class="information">
-            
-                 <h2>{{ $post->email }}</h2>
+            <div style="text-left" class="ml-20 font-semibold">
+                
+                 <h2>メールアドレス： {{ $post->email }}</h2>
                  <br>
-                 <h2>{{ $post->address }}</h2>
+                 <h2>住所： {{ $post->address }}</h2>
                  <br>
-                 <h2>{{ $post->tel }}</h2>
+                 <h2>電話番号： {{ $post->tel }}</h2>
                  <br>
-                 <h2>{{ $post->creditCardType }}</h2>
+                 <h2>クレジットカード種類： {{ $post->creditCardType }}</h2>
                  <br>
-                 <h2>{{ $post->creditCardNumber }}</h2>
+                 <h2>クレジットカード番号： {{ $post->creditCardNumber }}</h2>
                  <br>
-                 <h2>{{ $post->site_name }}</h2>
+                 <h2>登録サイト名： {{ $post->site_name }}</h2>
                  <br>
-                 <h2>{{ $post->site_url }}</h2>
+                 <h2>サイトURL： {{ $post->site_url }}</h2>
             
             </div>
             <br>
-            <div style="text-align:center;" class="edit-button">
-            <a href='/index/{{ $post->id }}/edit '>編集</a>
+            <div style="text-align:center;" >
+            <a href='/index/{{ $post->id }}/edit' class="underline hover:underline-offset-4">編集</a>
             </div>
             <br>
-            <div style="text-align:center;" class="delete-button">
+            <div style="text-align:center;" >
             <form action="/index/{{ $post->id }}" id="form_{{ $post->id }}" method="post">
                 @csrf
                 @method('DELETE')
-                <button type="button" onclick="deletePost({{ $post->id }})">削除</button> 
+                <button type="button" onclick="deletePost({{ $post->id }})" class="h-10 px-6 font-semibold rounded-md bg-black text-white">削除</button> 
             <script>
                 function deletePost(id) {
                     'use strict'
@@ -55,7 +55,7 @@
             <div style="text-align:center;" class="footer">
                 <a href="/index">戻る</a>
             </div>
-       
+       </div>
     </body>
      </x-app-layout>
 </html>

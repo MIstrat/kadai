@@ -7,25 +7,37 @@
     </head>
     <x-app-layout>
     <body>
-        <div style="text-align:center;" class="title">
-        <h1>通知一覧</h1>
-        </div>
-        <br>
-                <div style="text-align:center;" class="notifications">
-                    
-                        @forelse($notifications as $notification)
-                            <p>{{ $notification->data['site_name'] }}で情報が変更されました。</p>
-                            <a href="{{ $notification->data['site_url'] }}">{{ $notification->data['site_url'] }}</a>
-                            <br>
-                            <a href="{{ route('notifications.read', $notification) }}">既読にする</a><br>
-                            <br>
-                             @empty
-                            <p>まだ通知はありません</p>
-                        @endforelse
+        <div class="bg-blue-500 bg-opacity-50">
+            <div style="text-align:center;" class="text-xl font-medium">
+                <h1>通知一覧</h1>
+            </div>
+            <br>
+ 
+                @forelse($notifications as $notification)
+            <div class="flex justify-start ml-20">
+                    <div class="w-2/6">
+                        <p class="text-base font-medium text-slate-900">
+                            {{ $notification->data['site_name'] }}で情報が変更されました。
+                        </p>
+                        <a href="{{ $notification->data['site_url'] }}" class="text-sm text-slate-500 truncate">
+                            {{ $notification->data['site_url'] }}
+                        </a>
                     </div>
-                {{ $notifications->links() }}
-                </div>
-        </form>
+                    <div>
+                        <button class="h-10 px-6 font-semibold rounded-md bg-black text-white">
+                            <a href="{{ route('notifications.read', $notification) }}" >
+                                既読にする
+                            </a>
+                        </button>
+                    </div>
+                    
+            </div>
+                <br>
+                @empty
+                <p>まだ通知はありません</p>
+                @endforelse
+            {{ $notifications->links() }}
+        </div>
     </body>
-     </x-app-layout>
+    </x-app-layout>
 </html>
