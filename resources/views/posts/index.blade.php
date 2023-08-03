@@ -7,39 +7,65 @@
     </head>
     <x-app-layout>
     <body>
-        <div style="text-align:center;" class="title">
-        <h1>サイト一覧</h1>
-        </div>
-        <br>
-        <div style="text-align:center;" class="search">
-        <form method="GET" action="/index">
-            @csrf
-            <input type="search" placeholder="検索したい文字を入力" name="search" value="@if (isset($search)) {{ $search }} @endif">
-            <div>
-                <button type="submit">検索</button>
-                <button>
-                    <a href="/index" class="text-black">
-                        クリア
-                    </a>
-                </button>
+        <div class="bg-blue-500 bg-opacity-50">
+            <div style="text-align:center;" class="text-xl font-medium">
+                <h1>サイト一覧</h1>
             </div>
-        </form>
+            
+            <br>
+            
+            <div style="flex space-x-4" class="ml-10">
+                <form method="GET" action="/index">
+                    @csrf
+                    <input type="search" placeholder="検索したい文字を入力" name="search" value="@if (isset($search)) {{ $search }} @endif">
+                    <!--<div>-->
+                        <button type="submit" class="h-10 px-6 font-semibold rounded-md bg-black text-white">検索</button>
+                        <button class="h-10 px-6 font-semibold rounded-md border border-slate-200 text-slate-900">
+                            <a href="/index" class="text-black">
+                                クリア
+                            </a>
+                        </button>
+                    <!--</div>-->
+                </form>
+            </div>
+            
+            <br>
+            
+            <ul role="list" class="p-6 divide-y divide-slate-200">
+              
+                <!-- Remove top/bottom padding when first/last child -->
+                <li class="flex py-4 first:pt-0 last:pb-0">
+                  <div class="ml-3 overflow-hidden">
+                        @foreach($posts as $post)
+                            <h2>
+                             <a href="/index/{{ $post->id }}" class="text-bsae font-medium text-slate-900">{{ $post->site_name }}</a>
+                             </h2>
+                             <p class="text-sm text-slate-500 truncate">{{$post->site_url}}</p>
+                             <br>
+                        @endforeach
+                  </div>
+                
+                </li>
+              
+            </ul>
+              {{ $posts->links() }}           
+            
+            <!--<div style="text-left" class="font-semibold">-->
+            <!--@foreach($posts as $post)-->
+            <!--    <h2>-->
+            <!--     <a href="/index/{{ $post->id }}" class="ml-20">{{ $post->site_name }}</a>-->
+            <!--     </h2>-->
+            <!--     <br>-->
+            <!--@endforeach-->
+            <!--</div>-->
+            <!-- {{ $posts->links() }}  -->
+            <!--<br>-->
+        
+            <button style="text-align:center;" class="ml-20 h-10 px-6 font-semibold rounded-md bg-black text-white">
+                <a href="/index/store">新規作成</a>
+            </button>   
         </div>
-        <br>
-        <div style="text-align:center;" class="information">
-        @foreach($posts as $post)
-            <h2>
-             <a href="/index/{{ $post->id }}">{{ $post->site_name }}</a>
-             </h2>
-             <br>
-        @endforeach
-        </div>
-         {{ $posts->links() }}  
-        <br>
-    
-        <div style="text-align:center;" class="footer">
-            <a href="/index/store">新規作成</a>
-        </div>
+       
     </body>
      </x-app-layout>
 </html>
