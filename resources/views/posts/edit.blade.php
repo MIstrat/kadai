@@ -70,6 +70,75 @@
                         <div><p class="site_url-error" style="color:red">{{ $errors->first('post.site_url') }}</p></div>
                         
                     </div>
+                    <br>
+                    <div id="app" class="post-site-add flex justify-between">
+                        <div class="w-1/6"><h2>サイトURL追加</h2></div>
+                         <!--入力ボックスを表示する場所 ① -->
+                        <div v-for="(text,index) in texts">
+                            <!-- 各入力ボックス -->
+                            <input type="text" v-model="texts[index]">
+                        
+                            <!-- 入力ボックスの削除ボタン -->
+                            <button class="h-10 px-6 font-semibold rounded-md bg-black text-white" type="button" @click="removeInput(index)">削除</button>
+                        
+                        </div>
+    
+                        <!-- 入力ボックスを追加するボタン ② -->
+                        <button class="h-10 px-6 font-semibold rounded-md bg-black text-white" type="button" @click="addInput">追加する</button>
+                        
+                        <!-- 入力されたデータを送信するボタン ③ -->
+                        <br><br>
+                        <button type="button" @click="onSubmit">送信する</button>
+                    
+                        <!-- 確認用 -->
+                        <hr>
+                        <label>textsの中身</label>
+                        <div v-text="texts"></div>
+                    
+                    </div>
+                    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+                    <script>
+                    
+                        new Vue({
+                            el: '#app',
+                            data: {
+                                texts: [], // 複数入力のデータ（配列）
+                            },
+                            methods: {
+                                // ボタンをクリックしたときのイベント ①〜③
+                                addInput() {
+                                    this.texts.push(''); // 配列に１つ空データを追加する
+                        
+                                },
+                                removeInput(index) {
+                                    this.texts.splice(index, 1); // 👈 該当するデータを削除
+                                }
+                                
+                                 onSubmit() {
+
+                                        const url = '/multiple_inputs';
+                                        const params = {
+                                            texts: this.texts
+                                        };
+                                        axios.post(url, params)
+                                            .then(response => {
+                            
+                                                // 成功した時
+                            
+                                            })
+                                            .catch(error => {
+                            
+                                                // 失敗した時
+                            
+                                            });
+                            
+                                    }
+                            }
+                        });
+                    
+                    </script>   
+                    </div>
                     <div>
                         <input type="hidden" name="post[user_id]" value="{{ $post->user_id }}">
                     </div>
