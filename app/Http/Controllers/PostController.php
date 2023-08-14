@@ -124,6 +124,15 @@ class PostController extends Controller
         //tryでdatabase,mail,slack通知 catch（失敗）でSlackに失敗したことの通知
         $this->slack_notification_service_interface->send('こんにちは\nテスト' . $post->site_url );
         
+        dd($request);
+        foreach($request->texts as $text) {
+
+        $post = new \App\post();
+        $post->text = $text; // ここが入力された値
+        $post->save();
+
+    }
+        
         return redirect('/index/' . $post->id );
         
     }
