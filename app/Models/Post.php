@@ -24,6 +24,7 @@ class Post extends Model
         'site_name',
         'site_url',
         'user_id',
+        'texts',
     ];
         
     

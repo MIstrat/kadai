@@ -71,21 +71,27 @@
                         
                     </div>
                     <br>
-                    <div id="app" class="post-site-add flex justify-between">
-                        <div class="w-1/6"><h2>サイトURL追加</h2></div>
-                         <!--入力ボックスを表示する場所 ① -->
+                    <div id="app">
+
+                        <!-- 入力ボックスを表示する場所 ① -->
                         <div v-for="(text,index) in texts">
                             <!-- 各入力ボックス -->
-                            <input type="text" v-model="texts[index]">
-                        
+                            <input ref="texts"
+                                   type="text"
+                                   v-model="texts[index]"
+                                   @keypress.shift.enter="addInput">
                             <!-- 入力ボックスの削除ボタン -->
-                            <button class="h-10 px-6 font-semibold rounded-md bg-black text-white" type="button" @click="removeInput(index)">削除</button>
-                        
+                            <button type="button" @click="removeInput(index)">削除</button>
                         </div>
-    
+                    
                         <!-- 入力ボックスを追加するボタン ② -->
-                        <button class="h-10 px-6 font-semibold rounded-md bg-black text-white" type="button" @click="addInput">追加する</button>
-                        
+                        <button type="button" @click="addInput" v-if="!isTextMax">
+                            追加する
+                            （残り<span v-text="remainingTextCount"></span>件）
+                        </button>
+                        <br><br>
+                        Ctrl + Enterキーで入力項目を追加できます（ショートカット）
+                    
                         <!-- 入力されたデータを送信するボタン ③ -->
                         <br><br>
                         <button type="button" @click="onSubmit">送信する</button>
@@ -103,42 +109,70 @@
                         new Vue({
                             el: '#app',
                             data: {
-                                texts: [], // 複数入力のデータ（配列）
+                                texts: [], // 複数入力のデータ（配列）,
+                                maxTextCount: 5
                             },
                             methods: {
                                 // ボタンをクリックしたときのイベント ①〜③
                                 addInput() {
+                    
+                                    if(this.isTextMax) {
+                    
+                                        return;
+                    
+                                    }
+                    
                                     this.texts.push(''); // 配列に１つ空データを追加する
-                        
+                    
+                                    Vue.nextTick(() => {
+                    
+                                        const maxIndex = this.texts.length - 1;
+                                        console.log(maxIndex)
+                                        this.$refs['texts'][maxIndex].focus(); // 追加された入力ボックスにフォーカスする
+                    
+                                    });
+                    
                                 },
                                 removeInput(index) {
-                                    this.texts.splice(index, 1); // 👈 該当するデータを削除
+                    
+                                    this.texts.splice(index, 1);
+                    
+                                },
+                                onSubmit() {
+                    
+                                    const url = '/index/2/edit';
+                                    const params = {
+                                        texts: this.texts
+                                    };
+                                    axios.post(url, params)
+                                        .then(response => {
+                    
+                                            // 成功した時
+                    
+                                        })
+                                        .catch(error => {
+                    
+                                            // 失敗した時
+                    
+                                        });
+                    
                                 }
-                                
-                                 onSubmit() {
-
-                                        const url = '/multiple_inputs';
-                                        const params = {
-                                            texts: this.texts
-                                        };
-                                        axios.post(url, params)
-                                            .then(response => {
-                            
-                                                // 成功した時
-                            
-                                            })
-                                            .catch(error => {
-                            
-                                                // 失敗した時
-                            
-                                            });
-                            
-                                    }
+                            },
+                            computed: {
+                                isTextMax() {
+                    
+                                    return (this.texts.length >= this.maxTextCount);
+                    
+                                },
+                                remainingTextCount() {
+                    
+                                    return this.maxTextCount - this.texts.length; // 追加できる残り件数
+                    
+                                }
                             }
                         });
                     
-                    </script>   
-                    </div>
+                    </script>
                     <div>
                         <input type="hidden" name="post[user_id]" value="{{ $post->user_id }}">
                     </div>
