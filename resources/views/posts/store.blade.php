@@ -7,61 +7,64 @@
     </head>
     <x-app-layout>
     <body>
-        
-            <div style="text-align:center;" class="title">
-            <h1>個人情報編集</h1>
+        <div class="bg-blue-500 bg-opacity-50">
+            <div style="text-align:center;" class="title text-xl font-medium">
+            <h1>個人情報追加</h1>
             <br>
             </div>
-           
+            <div class="font-semibold flex flex-col ml-20">
+            <div class="flex flex-col">
             <form action="/index" method="POST">
                 @csrf
-                    <div style="text-align:center;" class="post-email">
-                        <h2>メールアドレス</h2>
-                        <input type="text" name="post[email]" >
-                        <p class="email-error" style="color:red">{{ $errors->first('post.email') }}</p>
+                    <div class="post-email flex justify-start">
+                        <div class="w-1/6"><h2>メールアドレス：</h2></div>
+                        <div><input type="text" name="post[email]" ></div>
+                        <div><p class="email-error" style="color:red">{{ $errors->first('post.email') }}</p></div>
                     </div>
                     <br>
-                    <div style="text-align:center;" class="post-address">
-                        <h2>住所</h2>
-                        <input type="text" name="post[address]"  >
-                        <p class="address-error" style="color:red">{{ $errors->first('post.address') }}</p>
+                    <div class="post-address flex justify-start">
+                        <div class="w-1/6"><h2>住所：</h2></div>
+                        <div><input type="text" name="post[address]"  ></div>
+                        <div><p class="address-error" style="color:red">{{ $errors->first('post.address') }}</p></div>
                     </div>
                     <br>
-                    <div style="text-align:center;" class="post-tel">
-                        <h2>電話番号</h2>
-                        <input type="text" name="post[tel]">
-                        <p class="tel-error" style="color:red">{{ $errors->first('post.tel') }}</p>
+                    <div class="post-tel flex justify-start">
+                        <div class="w-1/6"><h2>電話番号：</h2></div>
+                        <div><input type="text" name="post[tel]"></div>
+                        <div><p class="tel-error" style="color:red">{{ $errors->first('post.tel') }}</p></div>
                     </div>
                      <br>
-                    <div style="text-align:center;" class="post-creditCardType">
-                        <h2>クレジットカード種類</h2>
-                        <input type="text" name="post[creditCardType]"  >
-                        <p class="creditCardType-error" style="color:red">{{ $errors->first('post.creditCardType') }}</p>
+                    <div class="post-creditCardType flex justify-start">
+                        <div class="w-1/6"><h2>クレジットカード種類：</h2></div>
+                        <div><input type="text" name="post[creditCardType]"  ></div>
+                        <div><p class="creditCardType-error" style="color:red">{{ $errors->first('post.creditCardType') }}</p></div>
                     </div>
                      <br>
-                    <div style="text-align:center;" class="post-creditCardNumber">
-                        <h2>クレジットカード番号</h2>
-                        <input type="text" name="post[creditCardNumber]" >
-                        <p class="creditCardNumber-error" style="color:red">{{ $errors->first('post.creditCardNumber') }}</p>
+                    <div class="post-creditCardNumber flex justify-start">
+                        <div class="w-1/6"><h2>クレジットカード番号：</h2></div>
+                        <div><input type="text" name="post[creditCardNumber]" ></div>
+                        <div><p class="creditCardNumber-error" style="color:red">{{ $errors->first('post.creditCardNumber') }}</p></div>
                     </div>
                     <br>
-                    <div style="text-align:center;" class="post-site_name">
-                        <h2>サイト名</h2>
-                        <input type="text" name="post[site_name]" >
-                        <p class="site_name-error" style="color:red">{{ $errors->first('post.site_name') }}</p>
+                    <div class="post-site_name flex justify-start">
+                        <div class="w-1/6"><h2>サイト名：</h2></div>
+                        <div><input type="text" name="sitessite_name]" ></div>
+                        <div><p class="site_name-error" style="color:red">{{ $errors->first('post.site_name') }}</p></div>
                     </div>
                     <br>
-                    <div style="text-align:center;" class="post-site_url">
-                        <h2>サイトURL</h2>
-                        <input type="text" name="post[site_url]"  >
-                        <p class="site_url-error" style="color:red">{{ $errors->first('post.site_url') }}</p>
+                    <div class="post-site_url flex justify-start">
+                        <div class="w-1/6"><h2>サイトURL：</h2></div>
+                        <div><input type="text" name="sites[site_url]"  ></div>
+                        <div><p class="site_url-error" style="color:red">{{ $errors->first('post.site_url') }}</p></div>
                     </div>
                     <br>
                     
             
             
                     <div style="text-align:center;" class="save-button">
-                        <input type="submit" value="保存"/>
+                        <button class="h-10 px-6 font-semibold rounded-md bg-black text-white">
+                            <input type="submit" value="保存"/>
+                        </button>
                     </div>
                     <br>
             </form>
@@ -69,7 +72,8 @@
             <div style="text-align:center;" class="footer">
                 <a href="/index">戻る</a>
             </div>
-       
+            </div>
+        </div>
     </body>
      </x-app-layout>
 </html>

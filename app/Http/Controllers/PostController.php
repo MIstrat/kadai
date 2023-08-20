@@ -98,9 +98,25 @@ class PostController extends Controller
     {
         $input_post = $request['post'];
         $input_post['user_id'] = Auth::user()->id;
-        $input_information = $request['post'];
+        $input_information = $request['sites'];
         //dd($input_information);
+        $input_site_name = $request['sites']['site_name'];
+        $input_site_url = $request['sites']['site_url'];
         $post->fill($input_post)->save();
+        
+        
+        foreach($input_site_name as $site_name) {
+            foreach($input_site_url as $site_url) {
+                // dd($value);
+                $site = new \App\Models\Site();
+                // dd($site);
+                $site['site_name'] = $site_name;
+                $site['site_url'] = $site_url;// ここが入力された値
+                // dd($site['site_url']);
+            }
+            $site->save();
+        }
+        
         $input_information['post_id'] = $post->id;
         //dd($post);
         $information->fill($input_information)->save();
@@ -137,12 +153,12 @@ class PostController extends Controller
         
         foreach($input_site_name as $site_name) {
             foreach($input_site_url as $site_url) {
-            // dd($value);
-            $site = new \App\Models\Site();
-            // dd($site);
-            $site['site_name'] = $site_name;
-            $site['site_url'] = $site_url;// ここが入力された値
-            // dd($site['site_url']);
+                // dd($value);
+                $site = new \App\Models\Site();
+                // dd($site);
+                $site['site_name'] = $site_name;
+                $site['site_url'] = $site_url;// ここが入力された値
+                // dd($site['site_url']);
             }
             $site->save();
         }
