@@ -57,20 +57,6 @@
                         
                     </div>
                     <br>
-                    <!--<div class="post-site_name flex justify-start">-->
-                    <!--    <div class="w-1/6"><h2>サイト名</h2></div>-->
-                    <!--    <div><input type="text" name="post[site_name]" value="{{ $post->site_name }}" ></div>-->
-                    <!--    <div><p class="site_name-error" style="color:red">{{ $errors->first('post.site_name') }}</p></div>-->
-                        
-                    <!--</div>-->
-                    <!--<br>-->
-                    <!--<div class="post-site_url flex justify-start">-->
-                    <!--    <div class="w-1/6"><h2>サイトURL</h2></div>-->
-                    <!--    <div><input type="text" name="post[site_url]" value="{{ $post->site_url }}" ></div>-->
-                        
-                        
-                    <!--</div>-->
-                    <br>
                     <div id="app">
 
                         <div v-for="(item,index) in texts" class="post-site_name flex justify-start">
@@ -81,23 +67,19 @@
                                 ref="site_name"
                                 type="text"
                                 v-model="item.site_name"
-                                @keypress.shift.enter="addInput">
+                                @keypress.shift.enter="addInput"
+                                value="{{ $sites->site_name }}">
                             </div>
-                            <div><p class="site_name-error" style="color:red">{{ $errors->first('post.site_name') }}</p></div>
-                
-
-                         <!--入力ボックスを表示する場所 ① -->
-                        
-                             <!--各入力ボックス -->
                             
                             <div>
                                 <input :name="'sites[site_url][' + index + ']'"
                                 ref="site_url"
                                 type="text"
                                 v-model="item.site_url"
-                                @keypress.shift.enter="addInput">
+                                @keypress.shift.enter="addInput"
+                                value="{{ $sites->site_url }}">
                             </div>
-                            <div><p class="site_url-error" style="color:red">{{ $errors->first('post.site_url') }}</p></div>
+                            
                              <!--入力ボックスの削除ボタン -->
                             <div><button type="button" @click="removeInput(index)" class="h-10 px-6 font-semibold rounded-md bg-black text-white">削除</button></div>
                             
@@ -131,7 +113,7 @@
                     
                                     }
                     
-                                    this.texts.push({sites_name:'', sites_url:''}); // 配列に１つ空データを追加する
+                                    this.texts.push({site_name:'', site_url:''}); // 配列に１つ空データを追加する
                     
                                     Vue.nextTick(() => {
                     
@@ -147,6 +129,7 @@
                                     this.texts.splice(index, 1);
                     
                                 },
+                            },
                                 
                             computed: {
                                 isTextMax() {
