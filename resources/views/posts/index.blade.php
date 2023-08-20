@@ -36,30 +36,20 @@
                 <!-- Remove top/bottom padding when first/last child -->
                 <li class="flex py-4 first:pt-0 last:pb-0">
                   <div class="ml-3 overflow-hidden">
-                        @foreach($posts as $post)
+                        @foreach($sites as $site)
                             <h2>
-                             <a href="/index/{{ $post->id }}" class="text-bsae font-medium text-slate-900">{{ $post->site_name }}</a>
+                             <a href="/index/{{ $site->post_id }}" class="text-bsae font-medium text-slate-900">{{ $site->site_name }}</a>
                              </h2>
-                             <p class="text-sm text-slate-500 truncate">{{$post->site_url}}</p>
+                             <p class="text-sm text-slate-500 truncate">{{$site->site_url}}</p>
                              <br>
                         @endforeach
                   </div>
                 
                 </li>
+                
               
             </ul>
-              {{ $posts->links() }}           
-            
-            <!--<div style="text-left" class="font-semibold">-->
-            <!--@foreach($posts as $post)-->
-            <!--    <h2>-->
-            <!--     <a href="/index/{{ $post->id }}" class="ml-20">{{ $post->site_name }}</a>-->
-            <!--     </h2>-->
-            <!--     <br>-->
-            <!--@endforeach-->
-            <!--</div>-->
-            <!-- {{ $posts->links() }}  -->
-            <!--<br>-->
+              {{ $sites->links() }}           
         
             <button style="text-align:center;" class="ml-20 h-10 px-6 font-semibold rounded-md bg-black text-white">
                 <a href="/index/store">新規作成</a>

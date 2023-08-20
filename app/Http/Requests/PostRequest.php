@@ -32,8 +32,8 @@ class PostRequest extends FormRequest
             'post.email' => 'required|string|max:100',
             'post.address' => 'required|string|max:200',
             'post.tel' => 'required|string|max:100',
-            'post.site_name' => 'required|string|max:100',
-            'post.site_url' => 'required|string|max:100',
+            // 'post.site_name' => 'required|string|max:100',
+            // 'post.site_url' => 'required|string|max:100',
             //
         ];
     }

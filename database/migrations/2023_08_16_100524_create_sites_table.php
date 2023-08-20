@@ -13,15 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('sites', function (Blueprint $table) {
             $table->id();
-            $table->string('address',200);
-            $table->string('email',100);
-            $table->string('tel');
-            $table->foreignId('user_id')->constrained();
             $table->timestamps();
-            $table->softDeletes();
-            
+            $table->string('site_name');
+            $table->string('site_url');
+            $table->foreignId('post_id')->constrained();
         });
     }
 
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('sites');
     }
 };

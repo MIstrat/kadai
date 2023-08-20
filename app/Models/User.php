@@ -52,9 +52,14 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Post');
     }
     
-    public function paginatedPosts($limit_count= 1) 
+    // public function paginatedPosts($limit_count= 1) 
+    // {
+    //     return $this->posts()->orderBy('id')->paginate($limit_count);
+    // }
+    
+    public function getPosts() 
     {
-        return $this->posts()->orderBy('id')->paginate($limit_count);
+        return $this->posts()->get();
     }
     
     public function paginatedInformations($limit_count= 1) 

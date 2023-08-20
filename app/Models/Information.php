@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\Paginator;
 use App\Models\User;
+use App\Models\SiteName;
+use App\Models\SiteUrl;
 use Illuminate\Notifications\Notifiable;
 use App\Http\Requests\PostRequest;
 use App\Notifications\InformationNotification;
@@ -38,9 +40,14 @@ class Information extends Model
         return self::where('user_id', $userId)->orderBy('id')->paginate($limit_count);
     }
     
-    public function post()
+    public function site_name()
     {
-        return $this->belongsTo('App\Models\Post');
+        return $this->belongsTo('App\Models\SiteName');
+    }
+    
+    public function site_url()
+    {
+        return $this->belongsTo('App\Models\SiteUrl');
     }
 
 }

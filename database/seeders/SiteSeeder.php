@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Information;
+use App\Models\Site;
 
-class InformationSeeder extends Seeder
+class SiteSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,7 @@ class InformationSeeder extends Seeder
      */
     public function run()
     {
-        // Information::factory()->count(5)->create();
+        Site::factory()->count(1)->create();
         //
     }
 }

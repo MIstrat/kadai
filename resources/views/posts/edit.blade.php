@@ -57,50 +57,60 @@
                         
                     </div>
                     <br>
-                    <div class="post-site_name flex justify-start">
-                        <div class="w-1/6"><h2>サイト名</h2></div>
-                        <div><input type="text" name="post[site_name]" value="{{ $post->site_name }}" ></div>
-                        <div><p class="site_name-error" style="color:red">{{ $errors->first('post.site_name') }}</p></div>
+                    <!--<div class="post-site_name flex justify-start">-->
+                    <!--    <div class="w-1/6"><h2>サイト名</h2></div>-->
+                    <!--    <div><input type="text" name="post[site_name]" value="{{ $post->site_name }}" ></div>-->
+                    <!--    <div><p class="site_name-error" style="color:red">{{ $errors->first('post.site_name') }}</p></div>-->
                         
-                    </div>
-                    <br>
-                    <div class="post-site_url flex justify-start">
-                        <div class="w-1/6"><h2>サイトURL</h2></div>
-                        <div><input type="text" name="post[site_url]" value="{{ $post->site_url }}" ></div>
-                        <div><p class="site_url-error" style="color:red">{{ $errors->first('post.site_url') }}</p></div>
+                    <!--</div>-->
+                    <!--<br>-->
+                    <!--<div class="post-site_url flex justify-start">-->
+                    <!--    <div class="w-1/6"><h2>サイトURL</h2></div>-->
+                    <!--    <div><input type="text" name="post[site_url]" value="{{ $post->site_url }}" ></div>-->
                         
-                    </div>
+                        
+                    <!--</div>-->
                     <br>
                     <div id="app">
 
-                        <!-- 入力ボックスを表示する場所 ① -->
-                        <div v-for="(text,index) in texts">
+                        <div v-for="(item,index) in texts" class="post-site_name flex justify-start">
                             <!-- 各入力ボックス -->
-                            <input ref="texts"
-                                   type="text"
-                                   v-model="texts[index]"
-                                   @keypress.shift.enter="addInput">
-                            <!-- 入力ボックスの削除ボタン -->
-                            <button type="button" @click="removeInput(index)">削除</button>
+                            <div class="w-1/6"><h2>サイト名/サイトURL</h2></div>
+                            <div>
+                                <input :name="'sites[site_name][' + index + ']'"
+                                ref="site_name"
+                                type="text"
+                                v-model="item.site_name"
+                                @keypress.shift.enter="addInput">
+                            </div>
+                            <div><p class="site_name-error" style="color:red">{{ $errors->first('post.site_name') }}</p></div>
+                
+
+                         <!--入力ボックスを表示する場所 ① -->
+                        
+                             <!--各入力ボックス -->
+                            
+                            <div>
+                                <input :name="'sites[site_url][' + index + ']'"
+                                ref="site_url"
+                                type="text"
+                                v-model="item.site_url"
+                                @keypress.shift.enter="addInput">
+                            </div>
+                            <div><p class="site_url-error" style="color:red">{{ $errors->first('post.site_url') }}</p></div>
+                             <!--入力ボックスの削除ボタン -->
+                            <div><button type="button" @click="removeInput(index)" class="h-10 px-6 font-semibold rounded-md bg-black text-white">削除</button></div>
+                            
                         </div>
                     
-                        <!-- 入力ボックスを追加するボタン ② -->
-                        <button type="button" @click="addInput" v-if="!isTextMax">
-                            追加する
-                            （残り<span v-text="remainingTextCount"></span>件）
-                        </button>
-                        <br><br>
-                        Ctrl + Enterキーで入力項目を追加できます（ショートカット）
-                    
-                        <!-- 入力されたデータを送信するボタン ③ -->
-                        <br><br>
-                        <button type="button" @click="onSubmit">送信する</button>
-                    
-                        <!-- 確認用 -->
-                        <hr>
-                        <label>textsの中身</label>
-                        <div v-text="texts"></div>
-                    
+                         <!--入力ボックスを追加するボタン ② -->
+                        <div>
+                            <button type="button" @click="addInput" v-if="!isTextMax">
+                                追加する
+                                （残り<span v-text="remainingTextCount"></span>件）
+                            </button>
+                        </div>
+                       
                     </div>
                     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
@@ -110,19 +120,18 @@
                             el: '#app',
                             data: {
                                 texts: [], // 複数入力のデータ（配列）,
-                                maxTextCount: 5
+                                maxTextCount: 5,
                             },
                             methods: {
                                 // ボタンをクリックしたときのイベント ①〜③
                                 addInput() {
-                    
                                     if(this.isTextMax) {
                     
                                         return;
                     
                                     }
                     
-                                    this.texts.push(''); // 配列に１つ空データを追加する
+                                    this.texts.push({sites_name:'', sites_url:''}); // 配列に１つ空データを追加する
                     
                                     Vue.nextTick(() => {
                     
@@ -138,26 +147,7 @@
                                     this.texts.splice(index, 1);
                     
                                 },
-                                onSubmit() {
-                    
-                                    const url = '/index/2/edit';
-                                    const params = {
-                                        texts: this.texts
-                                    };
-                                    axios.post(url, params)
-                                        .then(response => {
-                    
-                                            // 成功した時
-                    
-                                        })
-                                        .catch(error => {
-                    
-                                            // 失敗した時
-                    
-                                        });
-                    
-                                }
-                            },
+                                
                             computed: {
                                 isTextMax() {
                     
@@ -173,11 +163,8 @@
                         });
                     
                     </script>
-                    <div>
-                        <input type="hidden" name="post[user_id]" value="{{ $post->user_id }}">
-                    </div>
                 </div>
-                </div>
+            </div>
                     
                     <br>
     

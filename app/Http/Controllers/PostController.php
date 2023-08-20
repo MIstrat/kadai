@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Site;
 use App\Models\User;
 use App\Models\Information;
 use Illuminate\Pagination\Paginator;
@@ -29,30 +30,38 @@ class PostController extends Controller
     }
     
     
-     public function index(User $user, Post $post, Request $request)
+     public function index(User $user, Site $site, Post $post, Request $request)
     {
         $user = Auth::user();
-        $posts = $user->paginatedPosts(5);
+        $posts = $user->posts()->get();
+        // dd($posts);
+        $sites = Site::whereBelongsTo($posts)->paginate(5);
+        // $sites = $posts->paginatedSites(5);
+        // $sites = $site->getPaginateByLimit(5);
+        // $sites = $site->get();
+        // dd($sites);
         $search = $request->input('search');
-        $query = Post::query();
-        
+        $query = Site::whereBelongsTo($posts)->getQuery();
+        // dd($sites);
         if($search){
             $spaceConversion = mb_convert_kana($search, 's');
-             $wordArraySearched = preg_split('/[\s]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+            $wordArraySearched = preg_split('/[\s]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
 
             foreach($wordArraySearched as $value){
-                $query->where('address', 'like', '%'.$value.'%')
-                    ->orWhere('email', 'like', '%'.$value.'%')
-                    ->orWhere('tel', 'like', '%'.$value.'%')
-                    ->orWhere('site_name', 'like', '%'.$value.'%')
-                    ->orWhere('creditCardType', 'like', '%'.$value.'%')
-                    ->orWhere('creditCardNumber', 'like', '%'.$value.'%');
+                $query
+                    // ->where('address', 'like', '%'.$value.'%')
+                    // ->orWhere('email', 'like', '%'.$value.'%')
+                    // ->orWhere('tel', 'like', '%'.$value.'%')
+                    ->Where('site_name', 'like', '%'.$value.'%')
+                    ->orWhere('site_url', 'like', '%'.$value.'%');
+                    // ->orWhere('creditCardType', 'like', '%'.$value.'%')
+                    // ->orWhere('creditCardNumber', 'like', '%'.$value.'%');
             }
             
-             $posts = $query->paginate(5);
+             $sites = $query->paginate(5);
         }
-
-        return view('posts.index',compact('user','posts','search'));
+        // dd($sites);
+        return view('posts.index',compact('user','sites','search'));
     }
     
      public function notification(User $user, InformationNotification $notifications)
@@ -68,11 +77,14 @@ class PostController extends Controller
         return view('posts.notification',compact('user', 'notifications'));
     }
     
-    public function info(Post $post)
+    public function info(Post $post, Site $site)
     {
         //$user = Auth::user();
         //$posts = $user->paginatedPosts();
-        return view('posts.info')->with(['post' => $post]);
+        // $post = Post::find(2);
+        $sites = $post->sites;
+        // dd($sites);
+        return view('posts.info',compact('post', 'sites'));
     }
     
      public function add(Post $post)
@@ -97,24 +109,44 @@ class PostController extends Controller
     }
     
     
-    public function edit(Post $post)
+    public function edit(Post $post, Site $site)
     {
-        return view('posts.edit')->with(['post' => $post]);
+        $sites = $post->sites;
+        // dd($sites);
+        return view('posts.edit',compact('post','sites'));
     }
     
-    public function update(PostRequest $request, Post $post, Information $information)
+    public function update(PostRequest $request, Post $post, Site $site, Information $information)
     {
+        // dd($request['sites']);
+        // dd($request['post']['site_url']);//site_urlへのリクエストの渡し方はここを参考にする。保存は131行目の通り
         $input_post = $request['post'];
         $input_post['user_id'] = Auth::user()->id;
-        //dd($input);
-        $input_information = $request['post'];
-        //dd($input_information);
-        $post->fill($input_post)->save();
-        $input_information['post_id'] = $post->id;
-        //ifでpostとinformationが一致しなければ以下の操作は行わないようにする
-        $information->fill($input_information)->save();
         
+        $input_site_name = $request['sites']['site_name'];
+        $input_site_url = $request['sites']['site_url'];
+        $input_information = $request['sites'];
+        dd($request);
+        $post->fill($input_post)->save();
+        // $site->fill($input_site)->save();
+        // dd($post);
+        $input_information['post_id'] = $site->id;
+        //ifでpostとinformationが一致しなければ以下の操作は行わないようにする
+        // $information->fill($input_information)->save();
         //dd($information);
+        
+        foreach($input_site_name as $site_name) {
+            foreach($input_site_url as $site_url) {
+            // dd($value);
+            $site = new \App\Models\Site();
+            // dd($site);
+            $site['site_name'] = $site_name;
+            $site['site_url'] = $site_url;// ここが入力された値
+            // dd($site['site_url']);
+            }
+            $site->save();
+        }
+        
         // お知らせ内容を対象ユーザー宛てに通知登録
         $user = Auth::user();
         //dd($user);
@@ -122,16 +154,10 @@ class PostController extends Controller
             new InformationNotification($information)
         );
         //tryでdatabase,mail,slack通知 catch（失敗）でSlackに失敗したことの通知
-        $this->slack_notification_service_interface->send('こんにちは\nテスト' . $post->site_url );
-        
-        dd($request);
-        foreach($request->texts as $text) {
-
-        $post = new \App\post();
-        $post->text = $text; // ここが入力された値
-        $post->save();
-
-    }
+        $this->slack_notification_service_interface->send("個人情報が変更されました\n"
+        . "サイト名：" . $site->site_url
+        . "サイトURL：" . $site->site_name
+        );
         
         return redirect('/index/' . $post->id );
         
