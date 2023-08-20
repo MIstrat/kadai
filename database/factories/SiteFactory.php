@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
  */
-class PostFactory extends Factory
+class SiteFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,10 +17,9 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'email' => fake() -> email,
-            'address' => fake() -> address(),
-            'tel' => fake() -> phonenumber(),
-            'user_id' => fake() -> numberBetween($max=1, $min=1)
+            'site_name' => fake() -> realText($maxNbChars = 10),
+            'site_url' => fake() -> url,
+            'post_id' => fake() -> numberBetween($max=3, $min=3)
             
                 ];
     }

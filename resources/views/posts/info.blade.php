@@ -24,9 +24,11 @@
                  <br>
                  <h2>クレジットカード番号： {{ $post->creditCardNumber }}</h2>
                  <br>
-                 <h2>登録サイト名： {{ $post->site_name }}</h2>
-                 <br>
-                 <h2>サイトURL： {{ $post->site_url }}</h2>
+                 @foreach($sites as $site)
+                     <h2>登録サイト名： {{ $site->site_name }}</h2>
+                     <br>
+                     <h2>サイトURL： {{ $site->site_url }}</h2>
+                 @endforeach
             
             </div>
             <br>

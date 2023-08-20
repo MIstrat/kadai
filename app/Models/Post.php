@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\Paginator;
 use App\Models\User;
+use App\Models\Site;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -21,8 +22,6 @@ class Post extends Model
         'tel',
         'creditCardType',
         'creditCardNumber',
-        'site_name',
-        'site_url',
         'user_id',
         'texts',
     ];
@@ -50,6 +49,11 @@ class Post extends Model
         return $this->belongsTo('App\Models\User');
     }
     
+     public function sites()
+    {
+        return $this->hasMany('App\Models\Site');
+    }
+    
     //public function getPaginateByLimit(int $limit_count = 1)
     //{
       //  return $this->orderBy('id')->paginate($limit_count);
@@ -58,6 +62,11 @@ class Post extends Model
     public static function getPaginateByLimit(int $userId, int $limit_count = 1) 
     {
         return self::where('user_id', $userId)->orderBy('id')->paginate($limit_count);
+    }
+    
+    public function paginatedSites($limit_count= 1) 
+    {
+        return $this->sites()->with('posts')->orderBy('id')->paginate($limit_count);
     }
     
     public static function boot()
@@ -73,6 +82,11 @@ class Post extends Model
     public function post()
     {
         return $this->hasMany('App\Models\Information');
+    }
+    
+        public function getSites() 
+    {
+        return $this->sites()->orderBy('id')->get();
     }
     
 
