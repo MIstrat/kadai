@@ -6,6 +6,8 @@ namespace Database\Seeders;
 use App\Models\Item;
 use App\Models\Team;
 use App\Models\User;
+use App\Models\Site;
+use App\Models\Post;
 use App\Models\Address;
 use Illuminate\Database\Seeder;
 use Database\Seeders\InformationSeeder;
@@ -19,8 +21,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        //$this->call(UserSeeder::class);
-        //$this->call(PostSeeder::class);
+        $this->call(UserSeeder::class);
+        $this->call(PostSeeder::class);
+        $this->call(SiteSeeder::class);
         $this->call(InformationSeeder::class);
        
         // \App\Models\User::factory(10)->create();

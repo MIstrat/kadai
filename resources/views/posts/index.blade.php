@@ -18,21 +18,18 @@
                 <form method="GET" action="/index">
                     @csrf
                     <input type="search" placeholder="検索したい文字を入力" name="search" value="@if (isset($search)) {{ $search }} @endif">
-                    <!--<div>-->
                         <button type="submit" class="h-10 px-6 font-semibold rounded-md bg-black text-white">検索</button>
                         <button class="h-10 px-6 font-semibold rounded-md border border-slate-200 text-slate-900">
                             <a href="/index" class="text-black">
                                 クリア
                             </a>
                         </button>
-                    <!--</div>-->
                 </form>
             </div>
             
             <br>
             
             <ul role="list" class="p-6 divide-y divide-slate-200">
-              
                 <!-- Remove top/bottom padding when first/last child -->
                 <li class="flex py-4 first:pt-0 last:pb-0">
                   <div class="ml-3 overflow-hidden">
@@ -41,21 +38,17 @@
                              <a href="/index/{{ $site->post_id }}" class="text-bsae font-medium text-slate-900">{{ $site->site_name }}</a>
                              </h2>
                              <p class="text-sm text-slate-500 truncate">{{$site->site_url}}</p>
+                             <p class="text-sm text-slate-500 truncate">{{$site->post->email}}</p>
                              <br>
                         @endforeach
                   </div>
-                
                 </li>
-                
-              
             </ul>
-              {{ $sites->links() }}           
-        
+            
             <button style="text-align:center;" class="ml-20 h-10 px-6 font-semibold rounded-md bg-black text-white">
                 <a href="/index/store">新規作成</a>
             </button>   
         </div>
-       
     </body>
      </x-app-layout>
 </html>

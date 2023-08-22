@@ -28,6 +28,8 @@
                      <h2>登録サイト名： {{ $site->site_name }}</h2>
                      <br>
                      <h2>サイトURL： {{ $site->site_url }}</h2>
+                     <br>
+                     <input type="hidden" name="site[post_id]" value="{{ $site->post_id }}">
                  @endforeach
             
             </div>

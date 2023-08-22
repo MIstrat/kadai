@@ -35,33 +35,35 @@ class PostController extends Controller
         $user = Auth::user();
         $posts = $user->posts()->get();
         // dd($posts);
-        $sites = Site::whereBelongsTo($posts)->paginate(5);
-        // $sites = $posts->paginatedSites(5);
-        // $sites = $site->getPaginateByLimit(5);
-        // $sites = $site->get();
-        // dd($sites);
-        $search = $request->input('search');
-        $query = Site::whereBelongsTo($posts)->getQuery();
-        // dd($sites);
-        if($search){
-            $spaceConversion = mb_convert_kana($search, 's');
-            $wordArraySearched = preg_split('/[\s]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
-
-            foreach($wordArraySearched as $value){
-                $query
-                    // ->where('address', 'like', '%'.$value.'%')
-                    // ->orWhere('email', 'like', '%'.$value.'%')
-                    // ->orWhere('tel', 'like', '%'.$value.'%')
-                    ->Where('site_name', 'like', '%'.$value.'%')
-                    ->orWhere('site_url', 'like', '%'.$value.'%');
-                    // ->orWhere('creditCardType', 'like', '%'.$value.'%')
-                    // ->orWhere('creditCardNumber', 'like', '%'.$value.'%');
+        // $sites = [];
+        // $search = '';
+        // if (empty($posts)){
+            $sites = Site::whereBelongsTo($posts)->paginate(5);
+            $search = $request->input('search');
+            $query_site = Site::query();
+            $query_post = Post::query();
+            dd($sites);
+            if($search){
+                $spaceConversion = mb_convert_kana($search, 's');
+                $wordArraySearched = preg_split('/[\s]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+    
+                foreach($wordArraySearched as $value){
+                    $query_post
+                        ->where('address', 'like', '%'.$value.'%')
+                        ->orWhere('email', 'like', '%'.$value.'%')
+                        ->orWhere('tel', 'like', '%'.$value.'%')
+                        ->orWhere('creditCardType', 'like', '%'.$value.'%')
+                        ->orWhere('creditCardNumber', 'like', '%'.$value.'%');
+                    $query_site
+                        ->Where('site_name', 'like', '%'.$value.'%')
+                        ->orWhere('site_url', 'like', '%'.$value.'%');
+                }
+                $posts = $query_post->paginate(5);
+                $sites = $query_site->paginate(5);
             }
-            
-             $sites = $query->paginate(5);
-        }
-        // dd($sites);
-        return view('posts.index',compact('user','sites','search'));
+        // }
+        // dd($posts->posts());
+        return view('posts.index',compact('user','posts','sites','search'));
     }
     
      public function notification(User $user, InformationNotification $notifications)
@@ -94,33 +96,23 @@ class PostController extends Controller
         return view('posts.store')->with(['post' => $post]);
     }
     
-    public function store(PostRequest $request, Post $post, Information $information)
+    public function store(Site $site, PostRequest $request, Post $post, Information $information)
     {
         $input_post = $request['post'];
         $input_post['user_id'] = Auth::user()->id;
-        $input_information = $request['sites'];
-        //dd($input_information);
-        $input_site_name = $request['sites']['site_name'];
-        $input_site_url = $request['sites']['site_url'];
         $post->fill($input_post)->save();
         
+        $input_site = $request['site'];
+        $input_site['post_id'] = $post->id;
+        $site->fill($input_site)->save();
+        // $sites = Site::whereBelongsTo($post)->first();
+        // $input_site['post_id'] = $sites['post_id'];
         
-        foreach($input_site_name as $site_name) {
-            foreach($input_site_url as $site_url) {
-                // dd($value);
-                $site = new \App\Models\Site();
-                // dd($site);
-                $site['site_name'] = $site_name;
-                $site['site_url'] = $site_url;// ここが入力された値
-                // dd($site['site_url']);
-            }
-            $site->save();
-        }
-        
-        $input_information['post_id'] = $post->id;
-        //dd($post);
+        $input_information = $request['site'];
+        $input_information['site_id'] = $site->id;
         $information->fill($input_information)->save();
-
+        // dd($information);
+        
         return redirect('/index' );
     }
     
@@ -128,13 +120,22 @@ class PostController extends Controller
     public function edit(Post $post, Site $site)
     {
         $sites = $post->sites;
+        // $count = count($sites,1);
         // dd($sites);
+        foreach($sites as $key =>$value){
+            // dd($key);
+            $site = new \App\Models\Site();
+        }
+        // dd($site_name);
+        // $site_name = $site_name[0];
+        // $site_url = $site_url[0];
+        // dd($site_name);
+
         return view('posts.edit',compact('post','sites'));
     }
     
     public function update(PostRequest $request, Post $post, Site $site, Information $information)
     {
-        // dd($request['sites']);
         // dd($request['post']['site_url']);//site_urlへのリクエストの渡し方はここを参考にする。保存は131行目の通り
         $input_post = $request['post'];
         $input_post['user_id'] = Auth::user()->id;
@@ -142,24 +143,23 @@ class PostController extends Controller
         $input_site_name = $request['sites']['site_name'];
         $input_site_url = $request['sites']['site_url'];
         $input_information = $request['sites'];
-        dd($request);
+        // dd($request);
         $post->fill($input_post)->save();
+        $sites = Site::whereBelongsTo($post)->first();
+        $sites = $sites['post_id'];
         // $site->fill($input_site)->save();
-        // dd($post);
+        // dd($sites);
         $input_information['post_id'] = $site->id;
         //ifでpostとinformationが一致しなければ以下の操作は行わないようにする
         // $information->fill($input_information)->save();
         //dd($information);
         
-        foreach($input_site_name as $site_name) {
-            foreach($input_site_url as $site_url) {
-                // dd($value);
-                $site = new \App\Models\Site();
-                // dd($site);
-                $site['site_name'] = $site_name;
-                $site['site_url'] = $site_url;// ここが入力された値
-                // dd($site['site_url']);
-            }
+         foreach(array_keys($input_site_name) as $key) {
+            $site = new \App\Models\Site();
+            $site['site_name'] = $input_site_name[$key];
+            $site['site_url'] = $input_site_url[$key];
+            $site['post_id'] = $sites;
+            // dd($site);
             $site->save();
         }
         
