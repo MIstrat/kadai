@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->text('site_name');
             $table->string('site_url');
-            $table->foreignId('post_id')
+            $table->foreignId('site_id')
                 ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();

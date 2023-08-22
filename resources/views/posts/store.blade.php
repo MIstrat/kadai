@@ -48,14 +48,14 @@
                     <br>
                     <div class="post-site_name flex justify-start">
                         <div class="w-1/6"><h2>サイト名：</h2></div>
-                        <div><input type="text" name="sitessite_name]" ></div>
-                        <div><p class="site_name-error" style="color:red">{{ $errors->first('post.site_name') }}</p></div>
+                        <div><input type="text" name="site[site_name]" ></div>
+                        <div><p class="site_name-error" style="color:red">{{ $errors->first('site.site_name') }}</p></div>
                     </div>
                     <br>
                     <div class="post-site_url flex justify-start">
                         <div class="w-1/6"><h2>サイトURL：</h2></div>
-                        <div><input type="text" name="sites[site_url]"  ></div>
-                        <div><p class="site_url-error" style="color:red">{{ $errors->first('post.site_url') }}</p></div>
+                        <div><input type="text" name="site[site_url]"  ></div>
+                        <div><p class="site_url-error" style="color:red">{{ $errors->first('site.site_url') }}</p></div>
                     </div>
                     <br>
                     

@@ -19,7 +19,7 @@ class SiteFactory extends Factory
         return [
             'site_name' => fake() -> realText($maxNbChars = 10),
             'site_url' => fake() -> url,
-            'post_id' => fake() -> numberBetween($max=3, $min=3)
+            'site_id' => fake() -> numberBetween($max=1, $min=10)
             
                 ];
     }

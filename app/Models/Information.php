@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\Paginator;
 use App\Models\User;
-use App\Models\SiteName;
-use App\Models\SiteUrl;
+use App\Models\Site;
 use Illuminate\Notifications\Notifiable;
 use App\Http\Requests\PostRequest;
 use App\Notifications\InformationNotification;
@@ -22,7 +21,7 @@ class Information extends Model
     protected $fillable = [
         'site_name',
         'site_url',
-        'post_id'
+        'site_id'
     ];
     
     public function user()
@@ -40,14 +39,9 @@ class Information extends Model
         return self::where('user_id', $userId)->orderBy('id')->paginate($limit_count);
     }
     
-    public function site_name()
+    public function sites()
     {
-        return $this->belongsTo('App\Models\SiteName');
+        return $this->belongsTo('App\Models\Site');
     }
     
-    public function site_url()
-    {
-        return $this->belongsTo('App\Models\SiteUrl');
-    }
-
 }

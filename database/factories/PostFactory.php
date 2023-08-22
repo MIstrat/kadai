@@ -20,7 +20,7 @@ class PostFactory extends Factory
             'email' => fake() -> email,
             'address' => fake() -> address(),
             'tel' => fake() -> phonenumber(),
-            'user_id' => fake() -> numberBetween($max=1, $min=1)
+            'user_id' => fake() -> numberBetween($max=1, $min=10)
             
                 ];
     }

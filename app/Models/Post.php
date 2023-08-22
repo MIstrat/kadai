@@ -66,7 +66,7 @@ class Post extends Model
     
     public function paginatedSites($limit_count= 1) 
     {
-        return $this->sites()->with('posts')->orderBy('id')->paginate($limit_count);
+        return $this->sites()->orderBy('id')->paginate($limit_count);
     }
     
     public static function boot()
