@@ -55,29 +55,24 @@
 
                     <br>
         
-                    <div id="app">
+                    <div id="app" class="flex justify-start">
                         <div class="w-1/6"><h2>サイト名/サイトURL</h2></div>
-                        <div v-for="site in inputSites" :key="site.id" class="post-site_name flex justify-start" >
-                            <div>
-                                <input :name="'sites[site_name][' + site.id + ']'"
-                                ref="site_name"
-                                type="text"
-                                v-model="site.site_name">
-                            </div>
+                        <!--既存のSite情報-->
+                        <div v-for="sites in inputSites" :key="sites.id">
+                            <!-- siteの内容を表示する処理 -->
                             
-                            <div>
-                                <input :name="'sites[site_url][' + site.id + ']'"
-                                ref="site_url"
-                                type="text"
-                                v-model="site.site_url">
-                            </div>
+                            <input v-model="sites.site_name" :name="`sites[${sites.id}][site_name]`" type="text" @blur="validateSites">
+                            <input v-model="sites.site_url" :name="`sites[${sites.id}][site_url]`" type="text" @blur="validateSites">
                         </div>
-                        <div v-for="(site, index) in newSites" :key="index" class="post-site_name flex justify-start">
-                            <input v-model="site.name" :name="`site[site_name][${index}]`" placeholder="サイト名" />
-                            <input v-model="site.url" :name="`site[site_url][${index}]`"  placeholder="サイトURL" />
-                            <button @click.prevent="removeSite(index)">削除</button>
+                        <!--新規追加分-->
+                        <div v-for="(site, index) in newSites"  >
+                            <input v-model="site.site_name" :name="`newSites[${index}][site_name]`" placeholder="サイト名" type="text" @blur="validateSites"/>
+                            <input v-model="site.site_url" :name="`newSites[${index}][site_url]`" placeholder="サイトURL" type="text" @blur="validateSites"/>
+                            <button @click.prevent="removeSite(index)" class="h-10 px-6 font-semibold rounded-md bg-black text-white">削除</button>
                         </div>
-                        <button v-if="sites.length + newSites.length < 5" @click.prevent="addNewSite">新しいサイトを追加</button>
+                        <button v-if="inputSites.length + newSites.length < 5" @click.prevent="addNewSite">
+                            新しいサイトを追加
+                        </button>
     
                     </div>
                     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
@@ -99,11 +94,11 @@
                             },
                             methods: {
                                 canAddMoreSites() {
-                                    return (this.sites.length + this.newSites.length) < 5;
+                                    return (this.inputSites.length + this.newSites.length) < 5;
                                 },
                                 addNewSite() {
                                     if (this.canAddMoreSites()) {
-                                        this.newSites.push({ name: '', url: '' });
+                                        this.newSites.push({ site_name: '', site_url: '' });
                                     } else {
                                         alert('合計で最大5つまで追加できます。');
                                     }
@@ -112,12 +107,15 @@
                                     this.newSites.splice(index, 1);
                                 },
                                 isDuplicate(site) {
-                                    return this.sites.some(existingSite => existingSite.name === site.name || existingSite.url === site.url);
+                                    return this.inputSites.some(existingSite => (existingSite.site_name === site.site_name && existingSite.site_name !== "" && site.site_name !== "") && 
+                                    (existingSite.site_url === site.site_url && existingSite.site_url !== "" && site.site_url !== ""));
                                 },
                                 validateSites() {
                                     for (let site of this.newSites) {
                                         if (this.isDuplicate(site)) {
-                                            alert(`${site.name} または ${site.url} は既に存在します。`);
+                                            alert(`${site.site_name} および ${site.site_url} は既に存在します。`);
+                                            site.site_name = '';
+                                            site.site_url = '';
                                             return false;
                                         }
                                     }

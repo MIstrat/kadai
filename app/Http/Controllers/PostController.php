@@ -42,7 +42,7 @@ class PostController extends Controller
             $search = $request->input('search');
             $query_site = Site::query();
             $query_post = Post::query();
-            dd($sites);
+            // dd($sites);
             if($search){
                 $spaceConversion = mb_convert_kana($search, 's');
                 $wordArraySearched = preg_split('/[\s]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
@@ -119,18 +119,9 @@ class PostController extends Controller
     
     public function edit(Post $post, Site $site)
     {
-        $sites = $post->sites;
-        // $count = count($sites,1);
+        $sites = $post->sites()->get();
+        // $sites = $sites[0];
         // dd($sites);
-        foreach($sites as $key =>$value){
-            // dd($key);
-            $site = new \App\Models\Site();
-        }
-        // dd($site_name);
-        // $site_name = $site_name[0];
-        // $site_url = $site_url[0];
-        // dd($site_name);
-
         return view('posts.edit',compact('post','sites'));
     }
     
@@ -139,7 +130,7 @@ class PostController extends Controller
         // dd($request['post']['site_url']);//site_urlへのリクエストの渡し方はここを参考にする。保存は131行目の通り
         $input_post = $request['post'];
         $input_post['user_id'] = Auth::user()->id;
-        
+        dd($request);
         $input_site_name = $request['sites']['site_name'];
         $input_site_url = $request['sites']['site_url'];
         $input_information = $request['sites'];
