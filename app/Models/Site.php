@@ -18,6 +18,8 @@ class Site extends Model
         'post_id'
         ];
         
+    // protected $primaryKey = 'site_name';
+    
      public function post()
     {
         return $this->belongsTo('App\Models\Post');

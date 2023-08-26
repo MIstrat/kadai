@@ -55,25 +55,37 @@
 
                     <br>
         
-                    <div id="app" class="flex justify-start">
-                        <div class="w-1/6"><h2>サイト名/サイトURL</h2></div>
-                        <!--既存のSite情報-->
-                        <div v-for="sites in inputSites" :key="sites.id">
-                            <!-- siteの内容を表示する処理 -->
-                            
-                            <input v-model="sites.site_name" :name="`sites[${sites.id}][site_name]`" type="text" @blur="validateSites">
-                            <input v-model="sites.site_url" :name="`sites[${sites.id}][site_url]`" type="text" @blur="validateSites">
+                    <div id="app">
+                        <div  class="flex justify-start" v-col="6">
+                            <div class="w-1/6"><h2>サイト名/サイトURL</h2></div>
+                            <!--既存のSite情報-->
+                            <div v-for="sites in inputSites" :key="sites.id">
+                                <!-- siteの内容を表示する処理 -->
+                                <p class="w-1/6">  </p>
+                                <input v-model="sites.site_name" :name="`sites[${sites.id}][site_name]`" type="text" @blur="validateSites">
+                                <input v-model="sites.site_url" :name="`sites[${sites.id}][site_url]`" type="text" @blur="validateSites">
+                                <input v-model="sites.id" :name="`sites[${sites.id}][id]`" type="hidden">
+                                <input v-model="sites.post_id" :name="`sites[${sites.id}][post_id]`" type="hidden">
+                            </div>
                         </div>
                         <!--新規追加分-->
-                        <div v-for="(site, index) in newSites"  >
-                            <input v-model="site.site_name" :name="`newSites[${index}][site_name]`" placeholder="サイト名" type="text" @blur="validateSites"/>
-                            <input v-model="site.site_url" :name="`newSites[${index}][site_url]`" placeholder="サイトURL" type="text" @blur="validateSites"/>
-                            <button @click.prevent="removeSite(index)" class="h-10 px-6 font-semibold rounded-md bg-black text-white">削除</button>
+                        <div class="flex justify-start" v-col="6">
+                            <div class="w-1/6"><p>  </p></div>
+                            <div v-for="(site, index) in newSites">
+                                <input v-model="site.site_name" :name="`newSites[${index}][site_name]`" placeholder="サイト名" type="text" @blur="validateSites"/>
+                                <input v-model="site.site_url" :name="`newSites[${index}][site_url]`" placeholder="サイトURL" type="text" @blur="validateSites"/>
+                                <button @click.prevent="removeSite(index)" class="h-10 px-6 font-semibold rounded-md bg-black text-white">削除</button>
+                            </div>
+                            <br>
                         </div>
-                        <button v-if="inputSites.length + newSites.length < 5" @click.prevent="addNewSite">
-                            新しいサイトを追加
-                        </button>
-    
+                        
+                        <div class="flex justify-start">
+                            <p class="w-1/6">  </p>
+                            <button v-if="inputSites.length + newSites.length < 5" @click.prevent="addNewSite">
+                                新しいサイトを追加
+                            </button>
+                        </div>
+                       
                     </div>
                     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
