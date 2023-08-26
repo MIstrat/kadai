@@ -62,7 +62,7 @@ class PostController extends Controller
                 $sites = $query_site->paginate(5);
             }
         // }
-        // dd($posts->posts());
+        // dd($sites[0]);
         return view('posts.index',compact('user','posts','sites','search'));
     }
     
@@ -81,11 +81,18 @@ class PostController extends Controller
     
     public function info(Post $post, Site $site)
     {
-        //$user = Auth::user();
-        //$posts = $user->paginatedPosts();
+        // $user = Auth::user();
+        // $posts = $user->posts()->get();
         // $post = Post::find(2);
         $sites = $post->sites;
-        // dd($sites);
+        //  foreach(array_keys($site) as $key) {
+            // dd($key);
+            // $sites['site_name'] = $site['site_name'];
+            // $sites['site_url'] = $site['site_url'];
+            // $sites['post_id'] = $site['post_id'];
+            // dd($site);
+        // }
+        // dd($site['site_name']);
         return view('posts.info',compact('post', 'sites'));
     }
     
@@ -127,45 +134,53 @@ class PostController extends Controller
     
     public function update(PostRequest $request, Post $post, Site $site, Information $information)
     {
-        // dd($request['post']['site_url']);//site_urlへのリクエストの渡し方はここを参考にする。保存は131行目の通り
         $input_post = $request['post'];
-        $input_post['user_id'] = Auth::user()->id;
-        dd($request);
-        $input_site_name = $request['sites']['site_name'];
-        $input_site_url = $request['sites']['site_url'];
-        $input_information = $request['sites'];
-        // dd($request);
+        // $input_post['user_id'] = Auth::user()->id;
         $post->fill($input_post)->save();
-        $sites = Site::whereBelongsTo($post)->first();
-        $sites = $sites['post_id'];
-        // $site->fill($input_site)->save();
-        // dd($sites);
-        $input_information['post_id'] = $site->id;
-        //ifでpostとinformationが一致しなければ以下の操作は行わないようにする
-        // $information->fill($input_information)->save();
-        //dd($information);
+        // dd($request);
         
-         foreach(array_keys($input_site_name) as $key) {
-            $site = new \App\Models\Site();
-            $site['site_name'] = $input_site_name[$key];
-            $site['site_url'] = $input_site_url[$key];
-            $site['post_id'] = $sites;
-            // dd($site);
-            $site->save();
+        $input_sites = $request['sites'];
+        // dd($input_sites);
+        foreach($input_sites as $id => $data) {
+            // dd($data);
+            // $sites = $input_sites[$key];
+            Site::where('id',$id)->update([
+                'site_name' => $data['site_name'],
+                'site_url' => $data['site_url'],
+                'post_id' => $data['post_id'],
+            ]);
         }
+ 
+        if (($request['newSites']) == Null){
+        }else{
+            // dd($request);
+            $input_newSites = $request['newSites'];
+            // dd($input_newSites);
+            foreach(array_keys($input_newSites) as $key) {
+                $site = new \App\Models\Site();
+                $sites = $input_newSites[$key];
+                $sites['post_id'] = $post->id;
+                $site->fill($sites)->save();
+            }
+            // dd($site);
+            $input_information = $request['newSites'];
+            foreach(array_keys($input_newSites) as $key) {
+                $informations = $input_information[$key];
+                $informations['site_id'] = $site->id;
+                $information->fill($informations)->save();
+            }
         
-        // お知らせ内容を対象ユーザー宛てに通知登録
-        $user = Auth::user();
-        //dd($user);
-        $user->notify(
-            new InformationNotification($information)
-        );
-        //tryでdatabase,mail,slack通知 catch（失敗）でSlackに失敗したことの通知
-        $this->slack_notification_service_interface->send("個人情報が変更されました\n"
-        . "サイト名：" . $site->site_url
-        . "サイトURL：" . $site->site_name
-        );
-        
+            // お知らせ内容を対象ユーザー宛てに通知登録
+            $user = Auth::user();
+            $user->notify(
+                new InformationNotification($information)
+            );
+            //tryでdatabase,mail,slack通知 catch（失敗）でSlackに失敗したことの通知
+            $this->slack_notification_service_interface->send("個人情報が変更されました\n"
+                . "サイト名：" . $site->site_url
+                . "サイトURL：" . $site->site_name
+            );
+        }
         return redirect('/index/' . $post->id );
         
     }
