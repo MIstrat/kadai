@@ -42,13 +42,13 @@ class PostController extends Controller
             $search = $request->input('search');
             $query_site = Site::query();
             $query_post = Post::query();
-            // dd($sites);
+            // dd($query_post);
             if($search){
                 $spaceConversion = mb_convert_kana($search, 's');
                 $wordArraySearched = preg_split('/[\s]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
     
                 foreach($wordArraySearched as $value){
-                    $query_post
+                    $query_post 
                         ->where('address', 'like', '%'.$value.'%')
                         ->orWhere('email', 'like', '%'.$value.'%')
                         ->orWhere('tel', 'like', '%'.$value.'%')
