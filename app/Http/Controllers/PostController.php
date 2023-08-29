@@ -35,9 +35,9 @@ class PostController extends Controller
         $user = Auth::user();
         $posts = $user->posts()->get();
         // dd($posts);
-        // $sites = [];
-        // $search = '';
-        // if (empty($posts)){
+        $sites = [];
+        $search = '';
+        if (empty($posts)){
             $sites = Site::whereBelongsTo($posts)->paginate(5);
             $search = $request->input('search');
             $query_site = Site::query();
@@ -61,7 +61,7 @@ class PostController extends Controller
                 $posts = $query_post->paginate(5);
                 $sites = $query_site->paginate(5);
             }
-        // }
+        }
         // dd($sites[0]);
         return view('posts.index',compact('user','posts','sites','search'));
     }
