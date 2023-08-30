@@ -35,16 +35,17 @@ class PostController extends Controller
         $user = Auth::user();
         $posts = $user->posts()->get();
         // dd($posts);
-        $sites = [];
-        $search = '';
-        if (empty($posts)){
+        // $sites = [];
+        // $search = '';
+        if (empty($sites)){
             $sites = [];
             $search = '';
+            // dd($posts);
         }else{
             $sites = Site::whereBelongsTo($posts)->paginate(5);
             $search = $request->input('search');
             // $query_site = Site::query();
-            // $query_post = Post::query();
+            $query_post = Post::query();
             // dd($sites);
             if($search){
                 $spaceConversion = mb_convert_kana($search, 's');
@@ -57,12 +58,12 @@ class PostController extends Controller
                         ->orWhere('tel', 'like', '%'.$value.'%')
                         ->orWhere('creditCardType', 'like', '%'.$value.'%')
                         ->orWhere('creditCardNumber', 'like', '%'.$value.'%');
-                    $query_site
-                        ->Where('site_name', 'like', '%'.$value.'%')
-                        ->orWhere('site_url', 'like', '%'.$value.'%');
+                    // $query_site
+                    //     ->Where('site_name', 'like', '%'.$value.'%')
+                    //     ->orWhere('site_url', 'like', '%'.$value.'%');
                 }
                 $posts = $query_post->paginate(5);
-                $sites = $query_site->paginate(5);
+                // $sites = $query_site->paginate(5);
             }
         }
         // dd($sites[0]);
