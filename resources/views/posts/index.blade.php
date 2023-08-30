@@ -39,6 +39,9 @@
                              </h2>
                              <p class="text-sm text-slate-500 truncate">{{$site->site_url}}</p>
                              <p class="text-sm text-slate-500 truncate">{{$site->post->email}}</p>
+                        @endforeach
+                        @foreach($posts as $post)
+                             <h2 type="hidden">{{$post->email}}</h2>
                              <br>
                         @endforeach
                   </div>
