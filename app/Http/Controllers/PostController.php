@@ -38,11 +38,14 @@ class PostController extends Controller
         $sites = [];
         $search = '';
         if (empty($posts)){
+            $sites = [];
+            $search = '';
+        }else{
             $sites = Site::whereBelongsTo($posts)->paginate(5);
             $search = $request->input('search');
-            $query_site = Site::query();
-            $query_post = Post::query();
-            // dd($query_post);
+            // $query_site = Site::query();
+            // $query_post = Post::query();
+            // dd($sites);
             if($search){
                 $spaceConversion = mb_convert_kana($search, 's');
                 $wordArraySearched = preg_split('/[\s]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
@@ -150,37 +153,36 @@ class PostController extends Controller
                 'post_id' => $data['post_id'],
             ]);
         }
- 
-        if (($request['newSites']) == Null){
-        }else{
-            // dd($request);
-            $input_newSites = $request['newSites'];
+        // dd($request);
+        
+        foreach($request['newSites'] as $id => $key){
+            $input_newSites = $key;
             // dd($input_newSites);
-            foreach(array_keys($input_newSites) as $key) {
+            if ($input_newSites['site_name'] && $input_newSites['site_url']== null){
+            }elseif (!null == ($input_newSites['site_name'] && $input_newSites['site_url'])){
                 $site = new \App\Models\Site();
-                $sites = $input_newSites[$key];
+                $sites = $input_newSites;
                 $sites['post_id'] = $post->id;
+                // dd($sites);
                 $site->fill($sites)->save();
-            }
-            // dd($site);
-            $input_information = $request['newSites'];
-            foreach(array_keys($input_newSites) as $key) {
-                $informations = $input_information[$key];
+                // dd($site);
+                $informations = $input_newSites;
                 $informations['site_id'] = $site->id;
                 $information->fill($informations)->save();
+            
+                // お知らせ内容を対象ユーザー宛てに通知登録
+                $user = Auth::user();
+                $user->notify(
+                    new InformationNotification($information)
+                );
+                //tryでdatabase,mail,slack通知 catch（失敗）でSlackに失敗したことの通知
+                $this->slack_notification_service_interface->send("個人情報が変更されました\n"
+                    . "サイト名：" . $site->site_url
+                    . "サイトURL：" . $site->site_name
+                );
             }
-        
-            // お知らせ内容を対象ユーザー宛てに通知登録
-            $user = Auth::user();
-            $user->notify(
-                new InformationNotification($information)
-            );
-            //tryでdatabase,mail,slack通知 catch（失敗）でSlackに失敗したことの通知
-            $this->slack_notification_service_interface->send("個人情報が変更されました\n"
-                . "サイト名：" . $site->site_url
-                . "サイトURL：" . $site->site_name
-            );
         }
+        
         return redirect('/index/' . $post->id );
         
     }
