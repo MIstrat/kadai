@@ -144,17 +144,22 @@ class PostController extends Controller
         // $input_post['user_id'] = Auth::user()->id;
         $post->fill($input_post)->save();
         // dd($request);
-        
-        $input_sites = $request['sites'];
         // dd($input_sites);
-        foreach($input_sites as $id => $data) {
-            // dd($data);
-            // $sites = $input_sites[$key];
-            Site::where('id',$id)->update([
-                'site_name' => $data['site_name'],
-                'site_url' => $data['site_url'],
-                'post_id' => $data['post_id'],
-            ]);
+        foreach($request['sites'] as $id => $data) {
+            $input_sites= $data;
+            // dd($input_sites);
+            // dd(($input_sites['site_name'] && $input_sites['site_url'])==null);
+            if (($input_sites['site_name'] && $input_sites['site_url'])== null){
+                // dd($input_sites);
+                //  dd(Site::where('id', $input_sites['id']));
+                Site::where('id', $input_sites['id'])->delete();
+            }elseif (!null == ($input_sites['site_name'] && $input_sites['site_url'])){
+                Site::where('id',$id)->update([
+                    'site_name' => $data['site_name'],
+                    'site_url' => $data['site_url'],
+                    'post_id' => $data['post_id'],
+                ]);
+            }
         }
         // dd($request);
         
