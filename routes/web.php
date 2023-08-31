@@ -18,10 +18,6 @@ use App\Http\Controllers\InformationController;
 |
 */
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::group(['middleware' => ['auth']], function(){
     Route::get('/index',[PostController::class,'index'])->name('index');
     //Route::get('/index',[InformationController::class,'store']);
