@@ -55,11 +55,14 @@
                                 <p>まだ情報はありません</p>
                             @endforelse
                         @endif
+                        
+                        
                   </div>
                 </li>
             </ul>
-            
-            {{ $sites->links() }}
+            @if(!empty($sites))
+                {{ $sites->links() }}
+            @endif
             <button style="text-align:center;" class="ml-20 h-10 px-6 font-semibold rounded-md bg-black text-white">
                 <a href="/index/store">新規作成</a>
             </button>   
