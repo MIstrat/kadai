@@ -39,7 +39,7 @@
                                 <a href="/index/{{ $post->id }}" class="text-bsae font-medium text-slate-900">{{ $post->email }}</a>
                                 </h2>
                                 <p class="text-sm text-slate-500 truncate">{{ $post->address }}</p>
-                        
+                                <br>
                              @endforeach
                         @else
                             @foreach($sites as $site)
@@ -47,9 +47,8 @@
                                 <a href="/index/{{ $site->post_id }}" class="text-bsae font-medium text-slate-900">{{ $site->site_name }}</a>
                                 </h2>
                                 <p class="text-sm text-slate-500 truncate">{{ $site->site_url }}</p>
-                                
                                 <p class="text-sm text-slate-500 truncate">{{ $site->post->email }}</p>
-                                 <br>
+                                <br>
                             @endforeach
                         @endif
                   </div>
