@@ -33,21 +33,29 @@
                 <!-- Remove top/bottom padding when first/last child -->
                 <li class="flex py-4 first:pt-0 last:pb-0">
                   <div class="ml-3 overflow-hidden">
-                        @foreach($sites as $site)
-                            <h2>
-                            <a href="/index/{{ $site->post_id }}" class="text-bsae font-medium text-slate-900">{{ $site->site_name }}</a>
-                            </h2>
-                            <p class="text-sm text-slate-500 truncate">{{$site->site_url}}</p>
-                            <p class="text-sm text-slate-500 truncate">{{$site->post->email}}</p>
-                            <br>
-                                 @foreach($posts as $post)
-                                 <input type="hidden">{{$post->email}}</input>
-                                @endforeach
-                        @endforeach
-                       
+                        @if(isset($search))
+                            @foreach($posts as $post)
+                                <h2>
+                                <a href="/index/{{ $post->id }}" class="text-bsae font-medium text-slate-900">{{ $post->email }}</a>
+                                </h2>
+                                <p class="text-sm text-slate-500 truncate">{{ $post->address }}</p>
+                        
+                             @endforeach
+                        @else
+                            @foreach($sites as $site)
+                                <h2>
+                                <a href="/index/{{ $site->post_id }}" class="text-bsae font-medium text-slate-900">{{ $site->site_name }}</a>
+                                </h2>
+                                <p class="text-sm text-slate-500 truncate">{{ $site->site_url }}</p>
+                                
+                                <p class="text-sm text-slate-500 truncate">{{ $site->post->email }}</p>
+                                 <br>
+                            @endforeach
+                        @endif
                   </div>
                 </li>
             </ul>
+            
             {{ $sites->links() }}
             <button style="text-align:center;" class="ml-20 h-10 px-6 font-semibold rounded-md bg-black text-white">
                 <a href="/index/store">新規作成</a>
