@@ -37,6 +37,7 @@ class PostController extends Controller
         // dd($posts);
         // dd($posts);
         // dd($posts->isEmpty());
+        $search = "";
         if ($posts->isEmpty()){
             $sites = [];
             $search = '';
@@ -47,7 +48,7 @@ class PostController extends Controller
             $search = $request->input('search');
             // $query_site = Site::query();
             $query_post = Post::query();
-        
+        }
             // dd($sites);
             if($search){
                 $spaceConversion = mb_convert_kana($search, 's');
@@ -64,10 +65,11 @@ class PostController extends Controller
                     //     ->Where('site_name', 'like', '%'.$value.'%')
                     //     ->orWhere('site_url', 'like', '%'.$value.'%');
                 }
-                $posts = $query_post->paginate(5);
+                $posts = $query_post->get();
+                // dd($posts->where('id', $sites['post_id']));
                 // $sites = $query_site->paginate(5);
             }
-        }
+        
         // dd($sites[0]);
         return view('posts.index',compact('user','posts','sites','search'));
     }
