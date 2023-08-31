@@ -35,15 +35,16 @@
                   <div class="ml-3 overflow-hidden">
                         @foreach($sites as $site)
                             <h2>
-                             <a href="/index/{{ $site->post_id }}" class="text-bsae font-medium text-slate-900">{{ $site->site_name }}</a>
-                             </h2>
-                             <p class="text-sm text-slate-500 truncate">{{$site->site_url}}</p>
-                             <p class="text-sm text-slate-500 truncate">{{$site->post->email}}</p>
+                            <a href="/index/{{ $site->post_id }}" class="text-bsae font-medium text-slate-900">{{ $site->site_name }}</a>
+                            </h2>
+                            <p class="text-sm text-slate-500 truncate">{{$site->site_url}}</p>
+                            <p class="text-sm text-slate-500 truncate">{{$site->post->email}}</p>
+                            <br>
+                                 @foreach($posts as $post)
+                                 <input type="hidden">{{$post->email}}</input>
+                                @endforeach
                         @endforeach
-                        @foreach($posts as $post)
-                             <h2 type="hidden">{{$post->email}}</h2>
-                             <br>
-                        @endforeach
+                       
                   </div>
                 </li>
             </ul>
