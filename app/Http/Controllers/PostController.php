@@ -38,11 +38,9 @@ class PostController extends Controller
         // dd($posts);
         // dd($posts->isEmpty());
         $search = "";
-        if ($posts->isEmpty()){
-            $sites = [];
-            $search = '';
-            // dd($posts);
-        }else if($posts->isNotEmpty()){
+        $sites = [];
+        // 個人情報がある場合
+        if($posts->isNotEmpty()){
             // dd($posts);
             $sites = Site::whereBelongsTo($posts)->paginate(5);
             $search = $request->input('search');
@@ -50,25 +48,25 @@ class PostController extends Controller
             $query_post = Post::query();
         }
             // dd($sites);
-            if($search){
-                $spaceConversion = mb_convert_kana($search, 's');
-                $wordArraySearched = preg_split('/[\s]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+        if($search){
+            $spaceConversion = mb_convert_kana($search, 's');
+            $wordArraySearched = preg_split('/[\s]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
     
-                foreach($wordArraySearched as $value){
-                    $query_post 
-                        ->where('address', 'like', '%'.$value.'%')
-                        ->orWhere('email', 'like', '%'.$value.'%')
-                        ->orWhere('tel', 'like', '%'.$value.'%')
-                        ->orWhere('creditCardType', 'like', '%'.$value.'%')
-                        ->orWhere('creditCardNumber', 'like', '%'.$value.'%');
-                    // $query_site
-                    //     ->Where('site_name', 'like', '%'.$value.'%')
-                    //     ->orWhere('site_url', 'like', '%'.$value.'%');
-                }
-                $posts = $query_post->get();
-                // dd($posts->where('id', $sites['post_id']));
-                // $sites = $query_site->paginate(5);
+            foreach($wordArraySearched as $value){
+                $query_post 
+                    ->where('address', 'like', '%'.$value.'%')
+                    ->orWhere('email', 'like', '%'.$value.'%')
+                    ->orWhere('tel', 'like', '%'.$value.'%')
+                    ->orWhere('creditCardType', 'like', '%'.$value.'%')
+                    ->orWhere('creditCardNumber', 'like', '%'.$value.'%');
+                // $query_site
+                //     ->Where('site_name', 'like', '%'.$value.'%')
+                //     ->orWhere('site_url', 'like', '%'.$value.'%');
             }
+            $posts = $query_post->get();
+            // dd($posts->where('id', $sites['post_id']));
+            // $sites = $query_site->paginate(5);
+        }
         
         // dd($sites[0]);
         return view('posts.index',compact('user','posts','sites','search'));

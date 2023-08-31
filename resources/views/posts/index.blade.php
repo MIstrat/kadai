@@ -33,24 +33,27 @@
                 <!-- Remove top/bottom padding when first/last child -->
                 <li class="flex py-4 first:pt-0 last:pb-0">
                   <div class="ml-3 overflow-hidden">
+                      
                         @if(isset($search))
-                            @foreach($posts as $post)
+                            @forelse($posts as $post)
                                 <h2>
                                 <a href="/index/{{ $post->id }}" class="text-bsae font-medium text-slate-900">{{ $post->email }}</a>
                                 </h2>
                                 <p class="text-sm text-slate-500 truncate">{{ $post->address }}</p>
-                        
-                             @endforeach
+                                <br>
+                            @empty
+                                <p>まだ情報はありません</p>
+                            @endforelse
                         @else
-                            @foreach($sites as $site)
+                            @forelse($sites as $site)
                                 <h2>
                                 <a href="/index/{{ $site->post_id }}" class="text-bsae font-medium text-slate-900">{{ $site->site_name }}</a>
                                 </h2>
                                 <p class="text-sm text-slate-500 truncate">{{ $site->site_url }}</p>
-                                
                                 <p class="text-sm text-slate-500 truncate">{{ $site->post->email }}</p>
-                                 <br>
-                            @endforeach
+                            @empty
+                                <p>まだ情報はありません</p>
+                            @endforelse
                         @endif
                   </div>
                 </li>
