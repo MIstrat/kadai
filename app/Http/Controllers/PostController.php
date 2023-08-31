@@ -35,17 +35,19 @@ class PostController extends Controller
         $user = Auth::user();
         $posts = $user->posts()->get();
         // dd($posts);
-        // $sites = [];
-        // $search = '';
-        if (empty($sites)){
+        // dd($posts);
+        // dd($posts->isEmpty());
+        if ($posts->isEmpty()){
             $sites = [];
             $search = '';
             // dd($posts);
-        }else{
+        }else if($posts->isNotEmpty()){
+            // dd($posts);
             $sites = Site::whereBelongsTo($posts)->paginate(5);
             $search = $request->input('search');
             // $query_site = Site::query();
             $query_post = Post::query();
+        
             // dd($sites);
             if($search){
                 $spaceConversion = mb_convert_kana($search, 's');
