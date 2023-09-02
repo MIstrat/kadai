@@ -26,43 +26,72 @@
                         </button>
                 </form>
             </div>
-            
             <br>
-            
-            <ul role="list" class="p-6 divide-y divide-slate-200">
-                <!-- Remove top/bottom padding when first/last child -->
-                <li class="flex py-4 first:pt-0 last:pb-0">
-                  <div class="ml-3 overflow-hidden">
-                      
-                        @if(isset($search))
-                            @forelse($posts as $post)
-                                <h2>
+            @if(isset($search))
+                <table class="border-separate border-spacing-2 border border-slate-400 ml-20">
+                    <thead>
+                        <tr>
+                            <th>メールアドレス</th>
+                            <th>住所</th>
+                            <th>電話番号</th>
+                            <th>クレジットカード</th>
+                            <th>クレジットカード番号</th>
+                        </tr>
+                    </thead>
+                @forelse($posts as $post)
+                    <tbody>
+                        <tr>
+                            <td>
                                 <a href="/index/{{ $post->id }}" class="text-bsae font-medium text-slate-900">{{ $post->email }}</a>
-                                </h2>
-                                <p class="text-sm text-slate-500 truncate">{{ $post->address }}</p>
-                                <br>
-                            @empty
-                                <p>まだ情報はありません</p>
-                            @endforelse
-                        @else
-                            @forelse($sites as $site)
-                                <h2>
+                            </td>
+                            <td class="text-sm text-slate-500 truncate">{{ $post->address }}</td>
+                            <td class="text-sm text-slate-500 truncate">{{ $post->tel }}</td>
+                            <td class="text-sm text-slate-500 truncate">{{ $post->creditCardType }}</td>
+                            <td class="text-sm text-slate-500 truncate">{{ $post->creditCardNumber }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                    @empty
+                        <p>まだ情報はありません</p>
+                    @endforelse
+                @else
+                <table class="border-separate border-spacing-2 border border-slate-400 ml-10">
+                    <thead>
+                        <tr>
+                            <th>サイト名</th>
+                            <th>サイトURL</th>
+                            <th>メールアドレス</th>
+                            <th>住所</th>
+                            <th>電話番号</th>
+                            <th>クレジットカード</th>
+                            <th>クレジットカード番号</th>
+                        </tr>
+                    </thead>
+                @forelse($sites as $site)
+                    <tbody>
+                        <tr>
+                            <td class="text-sm text-slate-500 truncate w-1/8" style="text-align:center;">
                                 <a href="/index/{{ $site->post_id }}" class="text-bsae font-medium text-slate-900">{{ $site->site_name }}</a>
-                                </h2>
-                                <p class="text-sm text-slate-500 truncate">{{ $site->site_url }}</p>
-                                <p class="text-sm text-slate-500 truncate">{{ $site->post->email }}</p>
-                            @empty
-                                <p>まだ情報はありません</p>
-                            @endforelse
-                        @endif
-                        
-                        
-                  </div>
-                </li>
-            </ul>
+                            </td>
+                            <td class="text-sm text-slate-500 truncate w-1/6" style="text-align:center;">{{ $site->site_url }}</td>
+                            <td class="text-sm text-slate-500 truncate w-1/8" style="text-align:center;">{{ $site->post->email }}</td>
+                            <td class="text-sm text-slate-500 truncate w-1/8" style="text-align:center;">{{ $site->post->address }}</td>
+                            <td class="text-sm text-slate-500 truncate w-1/8" style="text-align:center;">{{ $site->post->tel }}</td>
+                            <td class="text-sm text-slate-500 truncate w-1/8" style="text-align:center;">{{ $site->post->creditCardType }}</td>
+                            <td class="text-sm text-slate-500 truncate w-1/8" style="text-align:center;">{{ $site->post->creditCardNumber}}</td>
+                        </tr>
+                    </tbody>
+                
+                    @empty
+                        <p>まだ情報はありません</p>
+                    @endforelse
+                </table>
+            @endif
+            
             @if(!empty($sites))
                 {{ $sites->links() }}
             @endif
+            <br>
             <button style="text-align:center;" class="ml-20 h-10 px-6 font-semibold rounded-md bg-black text-white">
                 <a href="/index/store">新規作成</a>
             </button>   

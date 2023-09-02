@@ -10,7 +10,8 @@ use App\Models\Information;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Requests\PostRequest;
+use App\Http\Requests\StoreRequest;
+use App\Http\Requests\EditRequest;
 use App\Notifications\InformationNotification;
 use Illuminate\Notifications\DatabaseNotification;
 use App\Services\SlackNotificationServiceInterface;
@@ -109,7 +110,7 @@ class PostController extends Controller
         return view('posts.store')->with(['post' => $post]);
     }
     
-    public function store(Site $site, PostRequest $request, Post $post, Information $information)
+    public function store(Site $site, StoreRequest $request, Post $post, Information $information)
     {
         $input_post = $request['post'];
         $input_post['user_id'] = Auth::user()->id;
@@ -138,7 +139,7 @@ class PostController extends Controller
         return view('posts.edit',compact('post','sites'));
     }
     
-    public function update(PostRequest $request, Post $post, Site $site, Information $information)
+    public function update(EditRequest $request, Post $post, Site $site, Information $information)
     {
         $input_post = $request['post'];
         // $input_post['user_id'] = Auth::user()->id;
@@ -151,7 +152,7 @@ class PostController extends Controller
             // dd(($input_sites['site_name'] && $input_sites['site_url'])==null);
             if (($input_sites['site_name'] && $input_sites['site_url'])== null){
                 // dd($input_sites);
-                //  dd(Site::where('id', $input_sites['id']));
+                // dd(Site::where('id', $input_sites['id']));
                 Site::where('id', $input_sites['id'])->delete();
             }elseif (!null == ($input_sites['site_name'] && $input_sites['site_url'])){
                 Site::where('id',$id)->update([
