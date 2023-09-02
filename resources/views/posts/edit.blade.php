@@ -56,7 +56,7 @@
                     <br>
         
                     <div id="app">
-                        <div  class="flex justify-start" v-col="6">
+                        <div class="flex justify-start" v-col="6">
                             <div class="w-1/6"><h2>サイト名/サイトURL</h2></div>
                             <!--既存のSite情報-->
                             <div v-for="sites in inputSites" :key="sites.id">
