@@ -10,8 +10,7 @@ use App\Models\Information;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Requests\StoreRequest;
-use App\Http\Requests\EditRequest;
+use App\Http\Requests\PostRequest;
 use App\Notifications\InformationNotification;
 use Illuminate\Notifications\DatabaseNotification;
 use App\Services\SlackNotificationServiceInterface;
@@ -110,7 +109,7 @@ class PostController extends Controller
         return view('posts.store')->with(['post' => $post]);
     }
     
-    public function store(Site $site, StoreRequest $request, Post $post, Information $information)
+    public function store(Site $site, PostRequest $request, Post $post, Information $information)
     {
         $input_post = $request['post'];
         $input_post['user_id'] = Auth::user()->id;
@@ -139,7 +138,7 @@ class PostController extends Controller
         return view('posts.edit',compact('post','sites'));
     }
     
-    public function update(EditRequest $request, Post $post, Site $site, Information $information)
+    public function update(PostRequest $request, Post $post, Site $site, Information $information)
     {
         $input_post = $request['post'];
         // $input_post['user_id'] = Auth::user()->id;

@@ -22,32 +22,32 @@
                 <div class="font-semibold flex flex-col ml-20">
                     <div class="post-email flex justify-start">
                         <div class="w-1/6"><h2>メールアドレス</h2></div>
-                        <div><input type="text" name="post[email]" value="{{ $post->email }}"></div>
+                        <div><input type="text" size="50" name="post[email]" value="{{ $post->email }}"></div>
                         <div><p class="email-error" style="color:red">{{ $errors->first('post.email') }}</p></div>
                         
                     </div>
                     <br>
                     <div class="post-address flex justify-start">
                         <div class="w-1/6"><h2>住所</h2></div>
-                        <div><input type="text" name="post[address]" value="{{ $post->address }}" ></div>
+                        <div><input type="text" size="50" name="post[address]" value="{{ $post->address }}" ></div>
                         <div><p class="address-error" style="color:red">{{ $errors->first('post.address') }}</p></div>
                     </div>
                     <br>
                     <div class="post-tel flex justify-start">
                         <div class="w-1/6"><h2>電話番号</h2></div>
-                        <div><input type="text" name="post[tel]" value="{{ $post->tel }}"></div>
+                        <div><input type="text" size="50" name="post[tel]" value="{{ $post->tel }}"></div>
                         <div><p class="tel-error" style="color:red">{{ $errors->first('post.tel') }}</p></div>
                     </div>
                      <br>
                     <div class="post-creditCardType flex justify-start">
                         <div class="w-1/6"><h2>クレジットカード種類</h2></div>
-                        <div><input type="text" name="post[creditCardType]" value="{{ $post->creditCardType }}" ></div>
+                        <div><input type="text" size="50" name="post[creditCardType]" value="{{ $post->creditCardType }}" ></div>
                         <div><p class="creditCardType-error" style="color:red">{{ $errors->first('post.creditCardType') }}</p></div>
                     </div>
                      <br>
                     <div class="post-creditCardNumber flex justify-start">
                         <div class="w-1/6"><h2>クレジットカード番号</h2></div>
-                        <div><input type="text" name="post[creditCardNumber]" value="{{ $post->creditCardNumber }}" ></div>
+                        <div><input type="text" size="50" name="post[creditCardNumber]" value="{{ $post->creditCardNumber }}" ></div>
                         <div><p class="creditCardNumber-error" style="color:red">{{ $errors->first('post.creditCardNumber') }}</p></div>
                     </div>
                     
@@ -62,18 +62,23 @@
                             <div v-for="sites in inputSites" :key="sites.id">
                                 <!-- siteの内容を表示する処理 -->
                                 <p class="w-1/6">  </p>
-                                <input v-model="sites.site_name" :name="`sites[${sites.id}][site_name]`" type="text" @blur="validateSites">
-                                <input v-model="sites.site_url" :name="`sites[${sites.id}][site_url]`" type="text" @blur="validateSites">
+                                <input v-model="sites.site_name" :name="`sites[${sites.id}][site_name]`" type="text" size="50" @blur="validateSites">
+                                
+                                <input v-model="sites.site_url" :name="`sites[${sites.id}][site_url]`" type="text" size="50" @blur="validateSites">
+                                
                                 <input v-model="sites.id" :name="`sites[${sites.id}][id]`" type="hidden">
                                 <input v-model="sites.post_id" :name="`sites[${sites.id}][post_id]`" type="hidden">
                             </div>
                         </div>
+                        <br>
                         <!--新規追加分-->
                         <div class="flex justify-start" v-col="6">
-                            <div class="w-1/6"><p>  </p></div>
+                            <div class="w-1/6"><h2>新規サイト情報追加</h2></div>
                             <div v-for="(site, index) in newSites">
-                                <input v-model="site.site_name" :name="`newSites[${index}][site_name]`" placeholder="サイト名" type="text" @blur="validateSites"/>
-                                <input v-model="site.site_url" :name="`newSites[${index}][site_url]`" placeholder="サイトURL" type="text" @blur="validateSites"/>
+                                <input v-model="site.site_name" :name="`newSites[${index}][site_name]`" placeholder="サイト名" type="text" size="50" @blur="validateSites"/>
+                                
+                                <input v-model="site.site_url" :name="`newSites[${index}][site_url]`" placeholder="サイトURL" type="text" size="50" @blur="validateSites"/>
+                                
                                 <button @click.prevent="removeSite(index)" class="h-10 px-6 font-semibold rounded-md bg-black text-white">削除</button>
                             </div>
                             <br>
