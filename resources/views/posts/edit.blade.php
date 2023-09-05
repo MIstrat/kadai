@@ -65,10 +65,13 @@
                                 <input v-model="sites.site_name" :name="`sites[${sites.id}][site_name]`" type="text" size="50" @blur="validateSites">
                                 
                                 <input v-model="sites.site_url" :name="`sites[${sites.id}][site_url]`" type="text" size="50" @blur="validateSites">
+                                <p class="sites.site_url-error" style="color:red">{{ $errors->first('sites.*.site_url') }}</p>
+                                
                                 
                                 <input v-model="sites.id" :name="`sites[${sites.id}][id]`" type="hidden">
                                 <input v-model="sites.post_id" :name="`sites[${sites.id}][post_id]`" type="hidden">
                             </div>
+                            
                         </div>
                         <br>
                         <!--新規追加分-->
@@ -78,7 +81,9 @@
                                 <input v-model="site.site_name" :name="`newSites[${index}][site_name]`" placeholder="サイト名" type="text" size="50" @blur="validateSites"/>
                                 
                                 <input v-model="site.site_url" :name="`newSites[${index}][site_url]`" placeholder="サイトURL" type="text" size="50" @blur="validateSites"/>
+                                <p class="newSites.site_url-error" style="color:red">{{ $errors->first('newSites.*.site_url') }}</p>
                                 
+
                                 <button @click.prevent="removeSite(index)" class="h-10 px-6 font-semibold rounded-md bg-black text-white">削除</button>
                             </div>
                             <br>

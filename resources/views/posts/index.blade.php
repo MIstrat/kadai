@@ -50,12 +50,11 @@
                             <td class="text-sm text-slate-500 truncate">{{ $post->creditCardNumber }}</td>
                         </tr>
                     </tbody>
-               
-                    @empty
-                        <p>まだ情報はありません</p>
-                    @endforelse
-                </table>
-                @else
+                @empty
+                    <p>まだ情報はありません</p>
+                @endforelse
+            </table>
+            @else
                 <table class="border-separate border-spacing-2 border border-slate-400 ml-10">
                     <thead>
                         <tr>
