@@ -11,6 +11,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\PostRequest;
+use App\Http\Requests\StoreRequest;
 use App\Notifications\InformationNotification;
 use Illuminate\Notifications\DatabaseNotification;
 use App\Services\SlackNotificationServiceInterface;
@@ -109,19 +110,19 @@ class PostController extends Controller
         return view('posts.store')->with(['post' => $post]);
     }
     
-    public function store(Site $site, PostRequest $request, Post $post, Information $information)
+    public function store(Site $site, StoreRequest $request, Post $post, Information $information)
     {
         $input_post = $request['post'];
         $input_post['user_id'] = Auth::user()->id;
         $post->fill($input_post)->save();
         
-        $input_site = $request['site'];
+        $input_site = $request['sites'];
         $input_site['post_id'] = $post->id;
         $site->fill($input_site)->save();
         // $sites = Site::whereBelongsTo($post)->first();
         // $input_site['post_id'] = $sites['post_id'];
         
-        $input_information = $request['site'];
+        $input_information = $request['sites'];
         $input_information['site_id'] = $site->id;
         $information->fill($input_information)->save();
         // dd($information);
@@ -140,10 +141,10 @@ class PostController extends Controller
     
     public function update(PostRequest $request, Post $post, Site $site, Information $information)
     {
+        // dd($request);
         $input_post = $request['post'];
         // $input_post['user_id'] = Auth::user()->id;
         $post->fill($input_post)->save();
-        // dd($request);
         // dd($input_sites);
         foreach($request['sites'] as $id => $data) {
             $input_sites= $data;
@@ -159,6 +160,7 @@ class PostController extends Controller
                     'site_url' => $data['site_url'],
                     'post_id' => $data['post_id'],
                 ]);
+                // dd($errors);
             }
         }
         // dd($request);

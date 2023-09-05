@@ -10,7 +10,7 @@ use App\Rules\HasPermission;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class PostRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     
     /**
@@ -49,12 +49,12 @@ class PostRequest extends FormRequest
             'post.tel' => 'required|digits_between:10,15',
             'post.creditCardType' => 'nullable|string|max:100',
             'post.creditCardNumber' => 'nullable|digits_between:14,16',
-            // 'sites.site_name' => 'required|string|max:100',
-            // 'sites.site_url' => 'required|url|max:100',
+            'sites.site_name' => 'required|string|max:100',
+            'sites.site_url' => 'required|url|max:100',
             // 'sites.*.site_name' => 'max:100',
-            'sites.*.site_url' => 'nullable|url|max:100',
+            // 'sites.*.site_url' => 'nullable|url|max:100',
             // 'newSites.*.site_name' => 'url|max:100',
-            'newSites.*.site_url' => 'nullable|url|max:100',
+            // 'newSites.*.site_url' => 'nullable|url|max:100',
             
         ];
         
@@ -80,23 +80,13 @@ class PostRequest extends FormRequest
             'post.tel.required'  => '電話番号を入力してください',
             'post.tel.digits_between:10,15'  => '電話番号は10～15桁の数字で入力してください',
             'post.creditcardNumber.digits_between:14,16'  => '14～16桁の数字で入力してください',
-            'site.site_name.required'  => 'サイト名を入力してください',
-            'site.site_url.required'  => 'サイトURLを入力してください',
-            'site.site_url.url'  => 'URL形式で入力してください',
-            'sites.*.site_url.url'  => 'URL形式で入力してください',
-            'newSites.*.site_url.url'  => 'URL形式で入力してください',
+            'sites.site_name.required'  => 'サイト名を入力してください',
+            'sites.site_url.required'  => 'サイトURLを入力してください',
+            'sites.site_url.url'  => 'URL形式で入力してください',
+            // 'sites.*.site_url.url'  => 'URL形式で入力してください',
+            // 'newSites.*.site_url.url'  => 'URL形式で入力してください',
             
           ];
     }
     
-    public function nullable(Request $request){
-        foreach($request as $key){
-            $request->validate([
-                'sites' => 'url|max:100',
-                'sites[$key].site_url' => 'url|max:100',
-                'newSites' => 'url|max:100',
-                'newSites[$key].site_url' => 'url|max:100',
-             ]);
-        }
-    }
 }
