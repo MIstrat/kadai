@@ -69,15 +69,15 @@ class Post extends Model
         return $this->sites()->orderBy('id')->paginate($limit_count);
     }
     
-    public static function boot()
-    {
-        parent::boot();
+    // public static function boot()
+    // {
+    //     parent::boot();
         
-        static::deleted(function ($user)
-        {
-            $user->post()->delete();
-        });
-    }
+    //     static::deleted(function ($user)
+    //     {
+    //         $user->post()->delete();
+    //     });
+    // }
     
     public function post()
     {
