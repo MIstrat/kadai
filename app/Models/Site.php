@@ -42,6 +42,16 @@ class Site extends Model
         }
     }
     
+     public static function boot()
+    {
+        parent::boot();
+        
+        static::deleted(function ($user)
+        {
+            $user->site()->delete();
+        });
+    }
+    
      public function getPaginateByLimit(int $limit_count = 5) 
     {
         return $this->orderBy('id')->paginate($limit_count);
