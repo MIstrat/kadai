@@ -50,10 +50,13 @@
                             <td class="text-sm text-slate-500 truncate">{{ $post->creditCardNumber }}</td>
                         </tr>
                     </tbody>
-                @empty
-                    <p>まだ情報はありません</p>
-                @endforelse
-            </table>
+                    @empty
+                        <p>まだ情報はありません</p>
+                    @endforelse
+                </table>  
+                @if(!empty($posts))
+                    {{ $posts->appends(request()->query())->links() }}
+                @endif
             @else
                 <table class="border-separate border-spacing-2 border border-slate-400 ml-10">
                     <thead>
@@ -81,16 +84,18 @@
                             <td class="text-sm text-slate-500 truncate w-1/8" style="text-align:center;">{{ $site->post->creditCardNumber}}</td>
                         </tr>
                     </tbody>
-                
+               
                     @empty
                         <p>まだ情報はありません</p>
+                        
                     @endforelse
                 </table>
+                @if(!empty($sites))
+                    {{ $sites->links() }}
+                @endif
             @endif
             
-            @if(!empty($sites))
-                {{ $sites->links() }}
-            @endif
+            
             <br>
             <button style="text-align:center;" class="ml-20 h-10 px-6 font-semibold rounded-md bg-black text-white">
                 <a href="/index/store">新規作成</a>
