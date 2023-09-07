@@ -36,8 +36,9 @@ class PostController extends Controller
         $user = Auth::user();
         $posts = $user->posts()->get();
         // dd($posts);
-        // dd($posts);
-        // dd($posts->isEmpty());
+        $query_post = Post::query();
+        // dd($user['id']);
+        
         $search = "";
         $sites = [];
         // 個人情報がある場合
@@ -45,28 +46,38 @@ class PostController extends Controller
             // dd($posts);
             $sites = Site::whereBelongsTo($posts)->paginate(5);
             $search = $request->input('search');
-            // $query_site = Site::query();
-            $query_post = Post::query();
-        }
-            // dd($sites);
-        if($search){
-            $spaceConversion = mb_convert_kana($search, 's');
-            $wordArraySearched = preg_split('/[\s]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
-    
-            foreach($wordArraySearched as $value){
-                $query_post 
-                    ->where('address', 'like', '%'.$value.'%')
-                    ->orWhere('email', 'like', '%'.$value.'%')
-                    ->orWhere('tel', 'like', '%'.$value.'%')
-                    ->orWhere('creditCardType', 'like', '%'.$value.'%')
-                    ->orWhere('creditCardNumber', 'like', '%'.$value.'%');
-                // $query_site
-                //     ->Where('site_name', 'like', '%'.$value.'%')
-                //     ->orWhere('site_url', 'like', '%'.$value.'%');
+            
+            // dd($query_post);
+            if($search){
+                // searchがある場合にpostsを初期化
+                $posts = []; 
+                $user = Auth::user();
+                $query = $user->posts();
+                // dd($query);
+                // $query_post = Post::query();
+                // dd($query_post);
+                
+                $spaceConversion = mb_convert_kana($search, 's');
+                $wordArraySearched = preg_split('/[\s]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+                // $posts = [];
+                    $query->where(function ($query) use ($wordArraySearched) {
+                        foreach($wordArraySearched as $value){
+                            $query->where('address', 'like', '%'.$value.'%')
+                                ->orWhere('email', 'like', '%'.$value.'%')
+                                ->orWhere('tel', 'like', '%'.$value.'%')
+                                ->orWhere('creditCardType', 'like', '%'.$value.'%')
+                                ->orWhere('creditCardNumber', 'like', '%'.$value.'%');
+                        }
+                    });
+                    // $query_post->dd();
+                    // dd($posts);
+                    
+                // $query = $query_post;
+                // dd($query);
+                $posts = $query->paginate(3);
+                // dd($posts);
             }
-            $posts = $query_post->get();
-            // dd($posts->where('id', $sites['post_id']));
-            // $sites = $query_site->paginate(5);
+
         }
         
         // dd($sites[0]);
